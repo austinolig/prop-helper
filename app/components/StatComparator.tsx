@@ -4,21 +4,39 @@ import { useState } from 'react';
 import { StatType } from '../types/index';
 
 interface StatComparatorProps {
-  onCompare: (statType: StatType, threshold: number) => void;
+  onCompare: (
+    statType: StatType, 
+    threshold: number, 
+    lastNGames?: number, 
+    opponent?: string
+  ) => void;
+  availableOpponents: string[];
 }
 
-export default function StatComparator({ onCompare }: StatComparatorProps) {
+export default function StatComparator({ onCompare, availableOpponents }: StatComparatorProps) {
   const [selectedStat, setSelectedStat] = useState<StatType>('points');
   const [threshold, setThreshold] = useState<number>(25);
+  const [lastNGames, setLastNGames] = useState<string>('');
+  const [selectedOpponent, setSelectedOpponent] = useState<string>('');
 
   const handleCompare = () => {
-    onCompare(selectedStat, threshold);
+    const parsedLastNGames = lastNGames ? parseInt(lastNGames) : undefined;
+    const opponentFilter = selectedOpponent || undefined;
+    
+    onCompare(selectedStat, threshold, parsedLastNGames, opponentFilter);
   };
 
   const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!isNaN(value) && value >= 0) {
       setThreshold(value);
+    }
+  };
+
+  const handleLastNGamesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '' || (!isNaN(parseInt(value)) && parseInt(value) >= 0)) {
+      setLastNGames(value);
     }
   };
 
@@ -82,6 +100,40 @@ export default function StatComparator({ onCompare }: StatComparatorProps) {
             onChange={handleThresholdChange}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-foreground bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+        </div>
+
+        <div>
+          <label htmlFor="lastNGames" className="block text-sm font-medium text-foreground mb-2">
+            Last N Games (optional):
+          </label>
+          <input
+            id="lastNGames"
+            type="number"
+            min="0"
+            value={lastNGames}
+            onChange={handleLastNGamesChange}
+            placeholder="All games"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-foreground bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="opponent" className="block text-sm font-medium text-foreground mb-2">
+            Opponent Filter:
+          </label>
+          <select
+            id="opponent"
+            value={selectedOpponent}
+            onChange={(e) => setSelectedOpponent(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-foreground bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Opponents</option>
+            {availableOpponents.map((opponent) => (
+              <option key={opponent} value={opponent}>
+                {opponent}
+              </option>
+            ))}
+          </select>
         </div>
 
         <button
