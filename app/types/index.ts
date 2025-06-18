@@ -1,5 +1,6 @@
 export interface GameStat {
-	opponent: string;
+	opponentTeam: string;
+	location: 'home' | 'away';
 	points: number;
 	rebounds: number;
 	assists: number;

@@ -10,7 +10,7 @@ function applyGameFilters(
   // Apply opponent filter first
   if (filters?.opponent && filters.opponent !== '') {
     filteredGames = filteredGames.filter(
-      game => game.opponent === filters.opponent
+      game => game.opponentTeam === filters.opponent
     );
   }
 

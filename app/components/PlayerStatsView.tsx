@@ -44,7 +44,7 @@ export default function PlayerStatsView({ playerSeason }: PlayerStatsViewProps) 
                   {new Date(game.date).toLocaleDateString()}
                 </td>
                 <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-foreground">
-                  {game.opponent}
+                  {game.location === 'home' ? 'vs ' : '@ '}{game.opponentTeam}
                 </td>
                 <td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-center text-sm font-medium text-foreground">
                   {game.points}

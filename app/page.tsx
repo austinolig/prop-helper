@@ -19,7 +19,7 @@ export default function Home() {
 
   // Get unique opponents from the player's games
   const availableOpponents = useMemo(() => {
-    const opponents = new Set(mockPlayerSeason.games.map(game => game.opponent));
+    const opponents = new Set(mockPlayerSeason.games.map(game => game.opponentTeam));
     return Array.from(opponents).sort();
   }, []);
 
