@@ -7,7 +7,7 @@ export interface GameStat {
 	date: string;
 }
 
-export interface PlayerSeason {
+export interface PlayerData {
 	playerId: string;
 	playerName: string;
 	season: string;

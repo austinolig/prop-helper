@@ -1,4 +1,4 @@
-import { PlayerSeason, GameStat } from '../types/index';
+import { PlayerData, GameStat } from '../types/index';
 
 const mockGames: GameStat[] = [
 	{ opponentTeam: 'LAL', location: 'home', points: 28, rebounds: 7, assists: 5, date: '2023-10-18' },
@@ -88,7 +88,7 @@ const mockGames: GameStat[] = [
 	{ opponentTeam: 'UTA', location: 'home', points: 25, rebounds: 5, assists: 4, date: '2024-04-14' }
 ];
 
-export const mockPlayerSeason: PlayerSeason = {
+export const mockPlayerData: PlayerData = {
 	playerId: 'player_001',
 	playerName: 'Alex Johnson',
 	season: '2023-24',
