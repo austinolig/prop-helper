@@ -17,14 +17,16 @@ export async function getMockPlayerData(): Promise<PlayerData> {
 	});
 }
 
-export async function fetchNBAPlayerData(playerId: string, season: string): Promise<PlayerData> {
+export async function fetchNBAPlayerData(
+	// playerId: string, season: string
+): Promise<PlayerData> {
 	try {
 		const response = await fetch(''); // NBA API URL to be added
-		
+
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-		
+
 		const data = await response.json();
 		return data;
 	} catch (error) {
