@@ -21,7 +21,7 @@ export async function fetchNBAPlayerData(
 	// playerId: string, season: string
 ): Promise<PlayerData> {
 	try {
-		const response = await fetch(''); // NBA API URL to be added
+		const response = await fetch('/api/player');
 
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
