@@ -41,7 +41,7 @@ export default function PlayerStatsView({ playerData }: PlayerStatsViewProps) {
 						{playerData.games.map((game, index) => (
 							<tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
 								<td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-foreground">
-									{new Date(game.date).toLocaleDateString()}
+									{game.date}
 								</td>
 								<td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-foreground">
 									{game.location === 'home' ? 'vs ' : '@ '}{game.opponentTeam}

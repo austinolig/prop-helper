@@ -1,13 +1,11 @@
-from typing import Union
 from fastapi import FastAPI
 
 app = FastAPI()
 
-# route to confirm vercel funcion is working
 @app.get("/api")
-def read_root(): 
-    return {"Hello": "World"}
+def test_response(): 
+    return {"test": "response"}
 
 @app.get("/api/stats/{player_id}")
-def read_player(player_id: int, q: Union[str, None] = None):
+def read_player(player_id: int, q: str | None = None):
     return {"playerId": player_id, "q": q}
