@@ -3,31 +3,31 @@
 import { useState, useMemo } from 'react';
 import PlayerStatsView from './PlayerStatsView';
 import StatComparator from './StatComparator';
-import { StatType, PlayerData, GameStat } from '../types/index';
+import { StatType, PlayerGameLog, PlayerGameLogResponse } from '../types/index';
 import { calculateGamesOverThreshold, getStatSummary } from '../utils/statsHelper';
-
-interface ClientAnalyzerProps {
-	playerData: PlayerData;
-}
 
 interface ComparisonResult {
 	statType: StatType;
 	threshold: number;
 	gamesOver: number;
-	games: GameStat[];
-	// totalGames: number;
+	gameLog: PlayerGameLog[];
 	lastNGames?: number;
 	opponent?: string;
 }
 
-export default function ClientAnalyzer({ playerData }: ClientAnalyzerProps) {
+export default function ClientAnalyzer({
+	playerGameLog
+}: {
+	playerGameLog: PlayerGameLogResponse
+}) {
 	const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null);
 
-	// Get unique opponents from the player's games
 	const availableOpponents = useMemo(() => {
-		const opponents = new Set(playerData.games.map(game => game.opponentTeam));
+		const opponents = new Set(playerGameLog.data.map(game =>
+			game.matchup.split(' ').at(-1) ?? "No Opponent"
+		));
 		return Array.from(opponents).sort();
-	}, [playerData]);
+	}, [playerGameLog.data]);
 
 	const handleCompare = (
 		statType: StatType,
@@ -36,24 +36,24 @@ export default function ClientAnalyzer({ playerData }: ClientAnalyzerProps) {
 		opponent?: string
 	) => {
 		const filters = { lastNGames, opponent };
-		const result = calculateGamesOverThreshold(playerData, statType, threshold, filters);
+		const result = calculateGamesOverThreshold(playerGameLog, statType, threshold, filters);
 
 		setComparisonResult({
 			statType,
 			threshold,
 			gamesOver: result.gamesOver,
-			games: result.filteredGames,
+			gameLog: result.filteredGames,
 			lastNGames,
 			opponent
 		});
 	};
 
-	const statSummary = comparisonResult
-		? getStatSummary(
-			comparisonResult.games,
-			comparisonResult.statType
-		)
-		: null;
+	// const statSummary = comparisonResult
+	// 	? getStatSummary(
+	// 		comparisonResult.gameLog,
+	// 		comparisonResult.statType
+	// 	)
+	// 	: null;
 
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -76,7 +76,7 @@ export default function ClientAnalyzer({ playerData }: ClientAnalyzerProps) {
 									games with {comparisonResult.statType} &gt; {comparisonResult.threshold}
 								</div>
 								<div className="text-xs text-foreground/50 mt-1">
-									out of {comparisonResult.games.length ?? 0} filtered games
+									out of {comparisonResult.gameLog.length ?? 0} filtered games
 								</div>
 							</div>
 							{(comparisonResult.lastNGames || comparisonResult.opponent) && (
@@ -90,19 +90,19 @@ export default function ClientAnalyzer({ playerData }: ClientAnalyzerProps) {
 									)}
 								</div>
 							)}
-							{statSummary && (
-								<div className="text-xs text-foreground/70 space-y-1">
-									<div>Filtered Average: {statSummary.average}</div>
-									<div>Filtered High: {statSummary.max}</div>
-									<div>Filtered Low: {statSummary.min}</div>
-								</div>
-							)}
+							{/* {statSummary && ( */}
+							{/* 	<div className="text-xs text-foreground/70 space-y-1"> */}
+							{/* 		<div>Filtered Average: {statSummary.average}</div> */}
+							{/* 		<div>Filtered High: {statSummary.max}</div> */}
+							{/* 		<div>Filtered Low: {statSummary.min}</div> */}
+							{/* 	</div> */}
+							{/* )} */}
 						</div>
 					</div>
 				)}
 			</div>
 			<div className="lg:col-span-3">
-				<PlayerStatsView playerData={playerData} />
+				<PlayerStatsView playerGameLog={playerGameLog} />
 			</div>
 		</div>
 	);

@@ -17,7 +17,7 @@ interface StatComparatorProps {
 // Rewrite
 
 export default function StatComparator({ onCompare, availableOpponents }: StatComparatorProps) {
-	const [selectedStat, setSelectedStat] = useState<StatType>('points');
+	const [selectedStat, setSelectedStat] = useState<StatType>('pts');
 	const [threshold, setThreshold] = useState<number>(25);
 	const [lastNGames, setLastNGames] = useState<string>('');
 	const [selectedOpponent, setSelectedOpponent] = useState<string>('');
@@ -59,8 +59,8 @@ export default function StatComparator({ onCompare, availableOpponents }: StatCo
 							<input
 								type="radio"
 								name="statType"
-								value="points"
-								checked={selectedStat === 'points'}
+								value="pts"
+								checked={selectedStat === 'pts'}
 								onChange={(e) => setSelectedStat(e.target.value as StatType)}
 								className="mr-2"
 							/>
@@ -70,8 +70,8 @@ export default function StatComparator({ onCompare, availableOpponents }: StatCo
 							<input
 								type="radio"
 								name="statType"
-								value="rebounds"
-								checked={selectedStat === 'rebounds'}
+								value="reb"
+								checked={selectedStat === 'reb'}
 								onChange={(e) => setSelectedStat(e.target.value as StatType)}
 								className="mr-2"
 							/>
@@ -81,8 +81,8 @@ export default function StatComparator({ onCompare, availableOpponents }: StatCo
 							<input
 								type="radio"
 								name="statType"
-								value="assists"
-								checked={selectedStat === 'assists'}
+								value="ast"
+								checked={selectedStat === 'ast'}
 								onChange={(e) => setSelectedStat(e.target.value as StatType)}
 								className="mr-2"
 							/>

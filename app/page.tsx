@@ -1,14 +1,11 @@
 import ClientAnalyzer from './components/ClientAnalyzer';
 import {
 	getPlayerGameLog,
-	getMockPlayerData,
 } from './lib/data';
 
 export default async function Home() {
-	const playerData = await getMockPlayerData();
-
 	const playerGameLog = await getPlayerGameLog();
-	console.log('playerGameLog:', playerGameLog);
+	console.log('Player Game Log:', playerGameLog);
 
 	return (
 		<div className="min-h-screen p-4 sm:p-8">
@@ -21,7 +18,7 @@ export default async function Home() {
 						Analyze player performance and compare statistics against custom thresholds
 					</p>
 				</header>
-				<ClientAnalyzer playerData={playerData} />
+				<ClientAnalyzer playerGameLog={playerGameLog} />
 			</div>
 		</div>
 	);
