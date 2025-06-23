@@ -1,20 +1,20 @@
-import { PlayerData, StatType, GameStat } from '../types/index';
+import { StatType, PlayerGameLogResponse, PlayerGameLog } from '../types/index';
 
 export function calculateGamesOverThreshold(
-	playerData: PlayerData,
+	playerGameLog: PlayerGameLogResponse,
 	statType: StatType,
 	threshold: number,
 	filters?: {
 		lastNGames?: number;
 		opponent?: string
 	}
-): { gamesOver: number; filteredGames: GameStat[] } {
-	let filteredGames = [...playerData.games];
+): { gamesOver: number; filteredGames: PlayerGameLog[] } {
+	let filteredGames = [...playerGameLog.data];
 
 	// Apply opponent filter first
 	if (filters?.opponent) {
 		filteredGames = filteredGames.filter(
-			game => game.opponentTeam === filters.opponent
+			game => game.matchup.split(" ").at(-1) === filters.opponent
 		);
 	}
 
@@ -32,10 +32,10 @@ export function calculateGamesOverThreshold(
 }
 
 export function getStatSummary(
-	games: GameStat[],
+	gameLog: PlayerGameLog[],
 	statType: StatType,
 ) {
-	if (games.length === 0) {
+	if (gameLog.length === 0) {
 		return {
 			total: 0,
 			average: 0,
