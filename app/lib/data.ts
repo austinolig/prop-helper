@@ -1,8 +1,47 @@
-import { PlayerGameLogResponse } from '../types/index';
+import { PlayerGameLog } from '../types/index';
+
+interface PlayerGameLogResponse {
+	data_sets: {
+		data: {
+			headers: string[];
+			data: PlayerGameLogResponseData[];
+		};
+	}[];
+}
+
+type PlayerGameLogResponseData = [
+	string,
+	number,
+	string,
+	string,
+	string,
+	'W' | 'L',
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	boolean,
+]
 
 export async function getPlayerGameLog(
 	playerId: number = 2544 // Default to LeBron James' player ID
-): Promise<PlayerGameLogResponse> {
+): Promise<PlayerGameLog> {
 	const baseUrl = process.env.VERCEL_ENV === 'production'
 		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
 		: 'http://localhost:8000';
@@ -16,11 +55,16 @@ export async function getPlayerGameLog(
 			throw new Error(`(Error) status: ${response.status}`);
 		}
 
-		const data = await response.json();
+		const data: PlayerGameLogResponse = await response.json();
+		console.log('Response data:', data);
+
+		if (!data.data_sets) {
+			throw new Error('No data_sets available');
+		}
 
 		return {
 			headers: data.data_sets[0].data.headers,
-			data: data.data_sets[0].data.data.map((game: any) => ({
+			data: data.data_sets[0].data.data.map((game: PlayerGameLogResponseData) => ({
 				seasonId: game[0],
 				playerId: game[1],
 				gameId: game[2],
@@ -47,7 +91,7 @@ export async function getPlayerGameLog(
 				pf: game[23],
 				pts: game[24],
 				plusMinus: game[25],
-				videoAvailable: Boolean(game[26]),
+				videoAvailable: game[26],
 			})),
 		}
 	} catch (error) {

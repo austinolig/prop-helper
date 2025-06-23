@@ -1,9 +1,9 @@
-import { PlayerGameLogResponse } from '../types/index';
+import { PlayerGameLog } from '../types/index';
 
 export default function PlayerStatsView({
 	playerGameLog
 }: {
-	playerGameLog: PlayerGameLogResponse
+	playerGameLog: PlayerGameLog
 }) {
 	return (
 		<div className="w-full max-w-6xl">

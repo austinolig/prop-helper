@@ -1,9 +1,9 @@
-export interface PlayerGameLogResponse {
+export interface PlayerGameLog {
 	headers: string[];
-	data: PlayerGameLog[];
+	data: PlayerGameLogData[];
 }
 
-export interface PlayerGameLog {
+export interface PlayerGameLogData {
 	seasonId: string;
 	playerId: number;
 	gameId: string;
