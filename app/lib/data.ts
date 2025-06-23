@@ -17,20 +17,22 @@ export async function getMockPlayerData(): Promise<PlayerData> {
 	});
 }
 
-export async function fetchNBAPlayerData(
-	// playerId: string, season: string
-): Promise<PlayerData> {
+export async function getPlayerGameLog(
+	playerId: number = 2544 // Default to LeBron James' player ID (2544)
+): Promise<any> {
 	try {
-		const response = await fetch('/api/player');
+		const response = await fetch(`
+			${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stats/${playerId}
+		`);
 
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			throw new Error(`(Error) status: ${response.status}`);
 		}
 
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		console.error('Error fetching NBA player data:', error);
-		throw new Error('Failed to fetch NBA player data');
+		console.error('(Error) getPlayerGameLog:', error);
+		throw new Error('Failed to fetch player game log');
 	}
 }

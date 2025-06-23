@@ -1,15 +1,13 @@
-from nba_api.stats.endpoints import playercareerstats
-from http.server import BaseHTTPRequestHandler
- 
-class handler(BaseHTTPRequestHandler):
- 
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type','application/json')
-        self.end_headers()
+from typing import Union
+from fastapi import FastAPI
 
-        # Nikola Jokić
-        career = playercareerstats.PlayerCareerStats(player_id='203999') 
-        self.wfile.write(career.get_json().encode('utf-8'))
+app = FastAPI()
 
-        return 
+# route to confirm vercel funcion is working
+@app.get("/api")
+def read_root(): 
+    return {"Hello": "World"}
+
+@app.get("/api/stats/{player_id}")
+def read_player(player_id: int, q: Union[str, None] = None):
+    return {"player_id": player_id, "q": q}

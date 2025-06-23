@@ -1,14 +1,14 @@
 import ClientAnalyzer from './components/ClientAnalyzer';
 import {
-	// fetchNBAPlayerData,
+	getPlayerGameLog,
 	getMockPlayerData
 } from './lib/data';
 
 export default async function Home() {
 	const playerData = await getMockPlayerData();
 
-	// const playerCareer = await fetchNBAPlayerData();
-	// console.log('Player Career:', playerCareer);
+	const playerGameLog = await getPlayerGameLog();
+	console.log('playerGameLog:', playerGameLog);
 
 	return (
 		<div className="min-h-screen p-4 sm:p-8">
