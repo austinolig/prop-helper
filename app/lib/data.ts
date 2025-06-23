@@ -1,5 +1,4 @@
-import { mockPlayerData } from '../data/mockPlayerData';
-import { PlayerData } from '../types/index';
+import { mockPlayerData } from '../data/mockPlayerData'; import { PlayerData } from '../types/index';
 
 export async function getMockPlayerData(): Promise<PlayerData> {
 	// Simulate API fetch call with realistic delay
@@ -23,12 +22,16 @@ interface PlayerGameLogResponse {
 }
 
 export async function getPlayerGameLog(
-	playerId: number = 2544 // Default to LeBron James' player ID (2544)
+	playerId: number = 2544 // Default to LeBron James' player ID
 ): Promise<PlayerGameLogResponse> {
+	const baseUrl = process.env.VERCEL_ENV === 'production'
+		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+		: 'http://localhost:8000';
+
+	console.log(`${baseUrl}/api/stats/${playerId}`);
+
 	try {
-		const response = await fetch(`
-			${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stats/${playerId}
-		`);
+		const response = await fetch(`${baseUrl}/api/stats/${playerId}`);
 
 		if (!response.ok) {
 			throw new Error(`(Error) status: ${response.status}`);
