@@ -17,9 +17,14 @@ export async function getMockPlayerData(): Promise<PlayerData> {
 	});
 }
 
+interface PlayerGameLogResponse {
+	playerId: number;
+	q: string | null;
+}
+
 export async function getPlayerGameLog(
 	playerId: number = 2544 // Default to LeBron James' player ID (2544)
-): Promise<any> {
+): Promise<PlayerGameLogResponse> {
 	try {
 		const response = await fetch(`
 			${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stats/${playerId}
