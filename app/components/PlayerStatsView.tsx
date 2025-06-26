@@ -21,18 +21,15 @@ export default function PlayerStatsView({
 					<thead>
 						<tr className="bg-gray-50 dark:bg-gray-800">
 							{playerGameLog.headers.map((header, index) => (
-								<th
-									key={index}
-									className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left text-sm font-semibold text-foreground"
-								>
+								<th key={index} className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left text-sm font-semibold text-foreground">
 									{header}
 								</th>
 							))}
 						</tr>
 					</thead>
 					<tbody>
-						{playerGameLog.data.map((game, index) => (
-							<tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+						{playerGameLog.data.map((game) => (
+							<tr key={game.gameId} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
 								<td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-foreground">
 									{game.seasonId}
 								</td>
@@ -69,7 +66,6 @@ export default function PlayerStatsView({
 								<td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-foreground">
 									{game.fg3a}
 								</td>
-
 								<td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-foreground">
 									{game.fg3Pct}
 								</td>
