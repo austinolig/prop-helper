@@ -1,10 +1,10 @@
 import ClientAnalyzer from './components/ClientAnalyzer';
 import {
-	getPlayerGameLog,
+	getLebronGameLog
 } from './lib/data';
 
 export default async function Home() {
-	const playerGameLog = await getPlayerGameLog();
+	const playerGameLog = await getLebronGameLog();
 	console.log('Player Game Log:', playerGameLog);
 
 	return (
