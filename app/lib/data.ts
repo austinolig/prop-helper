@@ -43,8 +43,8 @@ export async function getPlayerGameLog(
 	playerId: number = 2544 // Default to LeBron James' player ID
 ): Promise<PlayerGameLog> {
 	const baseUrl = process.env.VERCEL_ENV === "production"
-		? "https://prop-helper-backend.onrender.com"
-		: "http://localhost:8000";
+		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+		: "http://localhost:3000";
 
 	console.log(`${baseUrl}/api/stats/${playerId}`);
 
@@ -103,8 +103,12 @@ export async function getPlayerGameLog(
 }
 
 export async function getLebronGameLog(): Promise<PlayerGameLog> {
+	const baseUrl = process.env.VERCEL_ENV === "production"
+		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+		: "http://localhost:3000";
+
 	try {
-		const response = await fetch("/api/lebron");
+		const response = await fetch(`${baseUrl}/api/lebron`);
 
 		if (!response.ok) {
 			throw new Error(`(Error) status: ${response.status}`);
@@ -152,7 +156,7 @@ export async function getLebronGameLog(): Promise<PlayerGameLog> {
 			})),
 		};
 	} catch (error) {
-		console.error('(Error) getPlayerGameLog:', error);
-		throw new Error('Failed to fetch player game log');
+		console.error('(Error) getLebronGameLog:', error);
+		throw new Error('Failed to fetch lebron game log');
 	}
 }
