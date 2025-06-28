@@ -102,18 +102,19 @@
 //
 // 	return insertedRevenue;
 // }
-//
-// export async function GET() {
-// 	try {
-// 		await sql.begin(() => [
-// 			seedUsers(),
-// 			seedCustomers(),
-// 			seedInvoices(),
-// 			seedRevenue(),
-// 		]);
-//
-// 		return Response.json({ message: 'Database seeded successfully' });
-// 	} catch (error) {
-// 		return Response.json({ error }, { status: 500 });
-// 	}
-// }
+
+export async function GET() {
+	return Response.json({ message: 'Do nothing' });
+	// try {
+	// 	await sql.begin(() => [
+	// 		seedUsers(),
+	// 		seedCustomers(),
+	// 		seedInvoices(),
+	// 		seedRevenue(),
+	// 	]);
+	//
+	// 	return Response.json({ message: 'Database seeded successfully' });
+	// } catch (error) {
+	// 	return Response.json({ error }, { status: 500 });
+	// }
+}
