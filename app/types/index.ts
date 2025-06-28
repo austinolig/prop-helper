@@ -1,9 +1,4 @@
 export interface PlayerGameLog {
-	headers: string[];
-	data: PlayerGameLogData[];
-}
-
-export interface PlayerGameLogData {
 	seasonId: string;
 	playerId: number;
 	gameId: string;
@@ -32,5 +27,35 @@ export interface PlayerGameLogData {
 	plusMinus: number;
 	videoAvailable: number;
 }
+
+export type PlayerGameLogData = [
+	string,
+	number,
+	string,
+	string,
+	string,
+	'W' | 'L',
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+];
 
 export type StatType = 'pts' | 'reb' | 'ast';

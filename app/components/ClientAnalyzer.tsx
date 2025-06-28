@@ -3,14 +3,17 @@
 import { useState, useMemo } from 'react';
 import PlayerStatsView from './PlayerStatsView';
 import StatComparator from './StatComparator';
-import { StatType, PlayerGameLog, PlayerGameLogData } from '../types/index';
-import { calculateGamesOverThreshold, getStatSummary } from '../utils/statsHelper';
+import { StatType, PlayerGameLog } from '../types/index';
+import {
+	calculateGamesOverThreshold,
+	// getStatSummary
+} from '../utils/statsHelper';
 
 interface ComparisonResult {
 	statType: StatType;
 	threshold: number;
 	gamesOver: number;
-	playerGameLogData: PlayerGameLogData[];
+	playerGameLogData: PlayerGameLog[];
 	lastNGames?: number;
 	opponent?: string;
 }
@@ -18,16 +21,16 @@ interface ComparisonResult {
 export default function ClientAnalyzer({
 	playerGameLog
 }: {
-	playerGameLog: PlayerGameLog
+	playerGameLog: PlayerGameLog[]
 }) {
 	const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null);
 
 	const availableOpponents = useMemo(() => {
-		const opponents = new Set(playerGameLog.data.map(game =>
+		const opponents = new Set(playerGameLog.map(game =>
 			game.matchup.split(' ').at(-1) ?? "No Opponent"
 		));
 		return Array.from(opponents).sort();
-	}, [playerGameLog.data]);
+	}, [playerGameLog]);
 
 	const handleCompare = (
 		statType: StatType,
@@ -48,12 +51,12 @@ export default function ClientAnalyzer({
 		});
 	};
 
-	const statSummary = comparisonResult
-		? getStatSummary(
-			comparisonResult.playerGameLogData,
-			comparisonResult.statType
-		)
-		: null;
+	// const statSummary = comparisonResult
+	// 	? getStatSummary(
+	// 		comparisonResult.playerGameLogData,
+	// 		comparisonResult.statType
+	// 	)
+	// 	: null;
 
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -90,19 +93,19 @@ export default function ClientAnalyzer({
 									)}
 								</div>
 							)}
-							{statSummary && (
-								<div className="text-xs text-foreground/70 space-y-1">
-									<div>Filtered Average: {statSummary.average}</div>
-									<div>Filtered High: {statSummary.max}</div>
-									<div>Filtered Low: {statSummary.min}</div>
-								</div>
-							)}
+							{/* {statSummary && ( */}
+							{/* 	<div className="text-xs text-foreground/70 space-y-1"> */}
+							{/* 		<div>Filtered Average: {statSummary.average}</div> */}
+							{/* 		<div>Filtered High: {statSummary.max}</div> */}
+							{/* 		<div>Filtered Low: {statSummary.min}</div> */}
+							{/* 	</div> */}
+							{/* )} */}
 						</div>
 					</div>
 				)}
 			</div>
 			<div className="lg:col-span-3">
-				<p>{playerGameLog.data.length} games</p>
+				<p>{playerGameLog.length} games</p>
 				<PlayerStatsView playerGameLog={playerGameLog} />
 			</div>
 		</div>

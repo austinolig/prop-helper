@@ -1,7 +1,7 @@
-import { StatType, PlayerGameLog, PlayerGameLogData } from '../types/index';
+import { StatType, PlayerGameLog } from '../types/index';
 
 export function calculateGamesOverThreshold(
-	playerGameLog: PlayerGameLog,
+	playerGameLog: PlayerGameLog[],
 	statType: StatType,
 	threshold: number,
 	filters?: {
@@ -10,9 +10,9 @@ export function calculateGamesOverThreshold(
 	}
 ): {
 	gamesOver: number;
-	filteredGames: PlayerGameLogData[]
+	filteredGames: PlayerGameLog[]
 } {
-	let filteredGames = [...playerGameLog.data];
+	let filteredGames = [...playerGameLog];
 
 	// Apply opponent filter first
 	if (filters?.opponent) {
@@ -34,32 +34,32 @@ export function calculateGamesOverThreshold(
 	};
 }
 
-export function getStatSummary(
-	playerGameLogData: PlayerGameLogData[],
-	statType: StatType,
-) {
-	if (playerGameLogData.length === 0) {
-		return {
-			total: 0,
-			average: 0,
-			max: 0,
-			min: 0,
-			gamesPlayed: 0
-		};
-	}
-
-	const values = playerGameLogData.map(game => game[statType] ?? 0);
-
-	const total = values.reduce((sum, value) => sum + value, 0);
-	const average = total / values.length;
-	const max = Math.max(...values);
-	const min = Math.min(...values);
-
-	return {
-		total,
-		average: Math.round(average * 10) / 10,
-		max,
-		min,
-		gamesPlayed: values.length
-	};
-}
+// export function getStatSummary(
+// 	playerGameLogData: PlayerGameLogData[],
+// 	statType: StatType,
+// ) {
+// 	if (playerGameLogData.length === 0) {
+// 		return {
+// 			total: 0,
+// 			average: 0,
+// 			max: 0,
+// 			min: 0,
+// 			gamesPlayed: 0
+// 		};
+// 	}
+//
+// 	const values = playerGameLogData.map(game => game[statType] ?? 0);
+//
+// 	const total = values.reduce((sum, value) => sum + value, 0);
+// 	const average = total / values.length;
+// 	const max = Math.max(...values);
+// 	const min = Math.min(...values);
+//
+// 	return {
+// 		total,
+// 		average: Math.round(average * 10) / 10,
+// 		max,
+// 		min,
+// 		gamesPlayed: values.length
+// 	};
+// }

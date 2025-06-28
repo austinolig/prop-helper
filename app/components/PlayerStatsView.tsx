@@ -3,7 +3,7 @@ import { PlayerGameLog } from '../types/index';
 export default function PlayerStatsView({
 	playerGameLog
 }: {
-	playerGameLog: PlayerGameLog
+	playerGameLog: PlayerGameLog[]
 }) {
 	return (
 		<div className="w-full max-w-6xl">
@@ -18,17 +18,17 @@ export default function PlayerStatsView({
 
 			<div className="overflow-x-auto">
 				<table className="w-full border-collapse bg-white dark:bg-gray-900 rounded-lg shadow-sm">
-					<thead>
-						<tr className="bg-gray-50 dark:bg-gray-800">
-							{playerGameLog.headers.map((header, index) => (
-								<th key={index} className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left text-sm font-semibold text-foreground">
-									{header}
-								</th>
-							))}
-						</tr>
-					</thead>
+					{/* <thead> */}
+					{/* 	<tr className="bg-gray-50 dark:bg-gray-800"> */}
+					{/* 		{playerGameLog.headers.map((header, index) => ( */}
+					{/* 			<th key={index} className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-left text-sm font-semibold text-foreground"> */}
+					{/* 				{header} */}
+					{/* 			</th> */}
+					{/* 		))} */}
+					{/* 	</tr> */}
+					{/* </thead> */}
 					<tbody>
-						{playerGameLog.data.map((game) => (
+						{playerGameLog.map((game) => (
 							<tr key={game.gameId} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
 								<td className="border border-gray-200 dark:border-gray-700 px-4 py-3 text-sm text-foreground">
 									{game.seasonId}

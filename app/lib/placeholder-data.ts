@@ -1,5 +1,54 @@
-// 2544: Lebron
-// 203999: Jokic
+import { PlayerGameLog, PlayerGameLogData } from "../types";
+import { nikolaJokicData } from "./jokic-data";
+import { lebronJamesData } from "./lebron-data";
+import { stephenCurryData } from "./curry-data";
+import { vinceCarterData } from "./carter-data";
+
+interface GameLog {
+	[key: string]: string | number;
+}
+
+function buildGameLog(data: PlayerGameLogData[]) {
+	const headers = [
+		"seasonId",
+		"playerId",
+		"gameId",
+		"gameDate",
+		"matchup",
+		"wl",
+		"min",
+		"fgm",
+		"fga",
+		"fgPct",
+		"fg3m",
+		"fg3a",
+		"fg3Pct",
+		"ftm",
+		"fta",
+		"ftPct",
+		"oreb",
+		"dreb",
+		"reb",
+		"ast",
+		"stl",
+		"blk",
+		"tov",
+		"pf",
+		"pts",
+		"plusMinus",
+		"videoAvailable"
+	]
+
+	return data.map(game => {
+		const gameLog: GameLog = {};
+
+		headers.forEach((header, index) => {
+			gameLog[header] = game[index];
+		});
+
+		return gameLog as unknown as PlayerGameLog;
+	});
+}
 
 const players = [
 	{
@@ -9,27 +58,27 @@ const players = [
 		"last_name": "James",
 		"is_active": true
 	},
-	// {
-	// 	"id": 203999,
-	// 	"full_name": "Nikola Jokić",
-	// 	"first_name": "Nikola",
-	// 	"last_name": "Jokić",
-	// 	"is_active": true
-	// },
-	// {
-	// 	"id": 201939,
-	// 	"full_name": "Stephen Curry",
-	// 	"first_name": "Stephen",
-	// 	"last_name": "Curry",
-	// 	"is_active": true
-	// },
-	// {
-	// 	"id": 1713,
-	// 	"full_name": "Vince Carter",
-	// 	"first_name": "Vince",
-	// 	"last_name": "Carter",
-	// 	"is_active": false
-	// },
+	{
+		"id": 203999,
+		"full_name": "Nikola Jokić",
+		"first_name": "Nikola",
+		"last_name": "Jokić",
+		"is_active": true
+	},
+	{
+		"id": 201939,
+		"full_name": "Stephen Curry",
+		"first_name": "Stephen",
+		"last_name": "Curry",
+		"is_active": true
+	},
+	{
+		"id": 1713,
+		"full_name": "Vince Carter",
+		"first_name": "Vince",
+		"last_name": "Carter",
+		"is_active": false
+	},
 	// {
 	// 	"id": 947,
 	// 	"full_name": "Allen Iverson",
@@ -74,6 +123,17 @@ const players = [
 	// },
 ];
 
-const gamelogs = [];
+const gamelogs = [
+	...buildGameLog(lebronJamesData),
+	...buildGameLog(nikolaJokicData),
+	...buildGameLog(stephenCurryData),
+	...buildGameLog(vinceCarterData),
+	// buildGameLog(allenIversonData),
+	// buildGameLog(shaiGilgeousAlexanderData),
+	// buildGameLog(jasonKiddData),
+	// buildGameLog(giannisAntetokounmpoData),
+	// buildGameLog(kawhiLeonardData),
+	// buildGameLog(lukaDoncicData)
+];
 
 export { players, gamelogs };
