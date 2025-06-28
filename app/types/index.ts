@@ -30,7 +30,7 @@ export interface PlayerGameLogData {
 	pf: number;
 	pts: number;
 	plusMinus: number;
-	videoAvailable: boolean;
+	videoAvailable: number;
 }
 
 export type StatType = 'pts' | 'reb' | 'ast';
