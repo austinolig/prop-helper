@@ -49,7 +49,7 @@ export default function SortableTable({ gamelogs }: SortableTableProps) {
 
 	const getSortIcon = (key: SortKey) => {
 		if (sortKey !== key) {
-			return '↕️';
+			return '';
 		}
 		return sortDirection === 'asc' ? '↑' : '↓';
 	};
@@ -61,49 +61,49 @@ export default function SortableTable({ gamelogs }: SortableTableProps) {
 				<table className="min-w-full table-auto">
 					<thead>
 						<tr className="border-b border-gray-700">
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('gameDate')}
 							>
 								Date {getSortIcon('gameDate')}
 							</th>
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('matchup')}
 							>
 								Matchup {getSortIcon('matchup')}
 							</th>
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('wl')}
 							>
 								W/L {getSortIcon('wl')}
 							</th>
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('pts')}
 							>
 								PTS {getSortIcon('pts')}
 							</th>
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('reb')}
 							>
 								REB {getSortIcon('reb')}
 							</th>
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('ast')}
 							>
 								AST {getSortIcon('ast')}
 							</th>
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('fgPct')}
 							>
 								FG% {getSortIcon('fgPct')}
 							</th>
-							<th 
+							<th
 								className="text-left p-2 text-gray-300 cursor-pointer hover:text-white select-none"
 								onClick={() => handleSort('fg3Pct')}
 							>
@@ -114,7 +114,7 @@ export default function SortableTable({ gamelogs }: SortableTableProps) {
 					<tbody>
 						{sortedGames.map((game, index) => (
 							<tr key={game.gameId} className={index % 2 === 0 ? 'bg-gray-750' : 'bg-gray-800'}>
-								<td className="p-2 text-gray-200">{new Date(game.gameDate).toLocaleDateString()}</td>
+								<td className="p-2 text-gray-200">{game.gameDate}</td>
 								<td className="p-2 text-gray-200">{game.matchup}</td>
 								<td className="p-2">
 									<span className={`font-medium ${game.wl === 'W' ? 'text-green-400' : 'text-red-400'}`}>

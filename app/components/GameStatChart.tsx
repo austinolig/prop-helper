@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameLog } from '../types';
 
 interface GameStatChartProps {
@@ -22,15 +22,29 @@ const statLabels: Record<StatType, string> = {
 	pf: 'Personal Fouls'
 };
 
+const roundToNearestHalf = (value: number): number => {
+	return Math.round(value * 2) / 2;
+};
+
+const calculateInitialThreshold = (gamelogs: GameLog[], stat: StatType): number => {
+	if (gamelogs.length === 0) return 0;
+	const sum = gamelogs.reduce((acc, game) => acc + game[stat], 0);
+	const average = sum / gamelogs.length;
+	return roundToNearestHalf(average);
+};
+
 export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 	const [selectedStat, setSelectedStat] = useState<StatType>('pts');
 	const [threshold, setThreshold] = useState<number>(0);
 	const [gameRange, setGameRange] = useState<number | 'all'>('all');
 
-	if (gamelogs.length === 0) return null;
+	useEffect(() => {
+		const initialThreshold = calculateInitialThreshold(gamelogs, selectedStat);
+		setThreshold(initialThreshold);
+	}, [gamelogs, selectedStat]);
 
-	const filteredGamelogs = gameRange === 'all' 
-		? gamelogs 
+	const filteredGamelogs = gameRange === 'all'
+		? gamelogs
 		: gamelogs.slice(0, gameRange);
 
 	const statValues = filteredGamelogs.map(game => game[selectedStat]);
@@ -39,6 +53,26 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 	const chartWidth = 800;
 	const barWidth = chartWidth / filteredGamelogs.length * 0.8;
 	const barSpacing = chartWidth / filteredGamelogs.length;
+
+	const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		if (value === '') {
+			setThreshold(0);
+			return;
+		}
+
+		const numValue = parseFloat(value);
+		if (!isNaN(numValue)) {
+			const roundedValue = roundToNearestHalf(numValue);
+			setThreshold(roundedValue);
+		}
+	};
+
+	const getBarColor = (value: number): string => {
+		if (value < threshold) return "#EF4444";
+		if (value > threshold) return "#10B981";
+		return "#6B7280";
+	};
 
 	return (
 		<div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-6 mb-8">
@@ -65,9 +99,10 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 							id="threshold"
 							type="number"
 							value={threshold}
-							onChange={(e) => setThreshold(Number(e.target.value))}
+							onChange={handleThresholdChange}
 							className="bg-gray-700 text-white px-3 py-2 rounded border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 w-20"
 							min="0"
+							step="0.5"
 							placeholder="0"
 						/>
 					</div>
@@ -131,7 +166,6 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 						const barHeight = (value / maxValue) * chartHeight;
 						const x = index * barSpacing + (barSpacing - barWidth) / 2;
 						const y = chartHeight - barHeight;
-						const isAboveThreshold = threshold > 0 && value > threshold;
 
 						return (
 							<g key={game.gameId}>
@@ -140,7 +174,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 									y={y}
 									width={barWidth}
 									height={barHeight}
-									fill={isAboveThreshold ? "#10B981" : "#3B82F6"}
+									fill={getBarColor(value)}
 									className="hover:opacity-80 transition-opacity"
 								/>
 								<text
@@ -175,7 +209,15 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 					<>
 						{' • '}
 						<span className="text-green-400">
-							{filteredGamelogs.filter(game => game[selectedStat] > threshold).length} games above threshold
+							{filteredGamelogs.filter(game => game[selectedStat] > threshold).length} above
+						</span>
+						{', '}
+						<span className="text-gray-400">
+							{filteredGamelogs.filter(game => game[selectedStat] === threshold).length} equal
+						</span>
+						{', '}
+						<span className="text-red-400">
+							{filteredGamelogs.filter(game => game[selectedStat] < threshold).length} below threshold
 						</span>
 					</>
 				)}
