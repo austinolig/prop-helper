@@ -69,3 +69,20 @@ body {
   border-radius: inherit;
   z-index: -1;
 }
+
+.tron-border-x {
+  border: 1px solid rgb(31 41 55);
+  border-top: none;
+  border-bottom: none;
+  position: relative;
+}
+
+.tron-border-x::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+  border-radius: inherit;
+  z-index: -1;
+}

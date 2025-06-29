@@ -85,7 +85,7 @@ export default async function Dashboard({
 					</Link>
 					<PlayerSearchDropdown players={allPlayers} currentPlayerId={parsedPlayerId} />
 				</div>
-				
+
 				{/* Player Info Section */}
 				<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
 					<div className="flex items-start gap-6">
@@ -100,31 +100,36 @@ export default async function Dashboard({
 								<div className="text-sm text-gray-400">Status: <span className={player.is_active ? 'text-green-400' : 'text-red-400'}>{player.is_active ? 'Active' : 'Inactive'}</span></div>
 							</div>
 						</div>
-						
+
 						{/* Season Stats - Single Row */}
 						{stats && (
 							<div className="flex-1 ml-6">
-								<h3 className="text-lg font-semibold mb-3 text-white">Season Averages ({stats.gamesPlayed} games)</h3>
-								<div className="flex gap-6 items-center">
+								<h3 className="text-lg font-semibold mb-3 text-white">Season Stats ({stats.gamesPlayed} games)</h3>
+								<div className="flex gap-6">
 									<div className="text-center">
 										<div className="text-xl font-bold text-cyan-400">{stats.avgPts}</div>
 										<div className="text-xs text-gray-400">PPG</div>
+										<div className="text-xs text-gray-500">H:{stats.highPts} / L:{stats.lowPts}</div>
 									</div>
 									<div className="text-center">
 										<div className="text-xl font-bold text-green-400">{stats.avgReb}</div>
 										<div className="text-xs text-gray-400">RPG</div>
+										<div className="text-xs text-gray-500">H:{stats.highReb} / L:{stats.lowReb}</div>
 									</div>
 									<div className="text-center">
 										<div className="text-xl font-bold text-orange-400">{stats.avgAst}</div>
 										<div className="text-xs text-gray-400">APG</div>
+										<div className="text-xs text-gray-500">H:{stats.highAst} / L:{stats.lowAst}</div>
 									</div>
 									<div className="text-center">
 										<div className="text-xl font-bold text-purple-400">{stats.avgStl}</div>
 										<div className="text-xs text-gray-400">SPG</div>
+										<div className="text-xs text-gray-500">H:{stats.highStl} / L:{stats.lowStl}</div>
 									</div>
 									<div className="text-center">
 										<div className="text-xl font-bold text-pink-400">{stats.avgBlk}</div>
 										<div className="text-xs text-gray-400">BPG</div>
+										<div className="text-xs text-gray-500">H:{stats.highBlk} / L:{stats.lowBlk}</div>
 									</div>
 									<div className="text-center">
 										<div className="text-xl font-bold text-yellow-400">{stats.fgPct}%</div>
@@ -136,10 +141,9 @@ export default async function Dashboard({
 									</div>
 								</div>
 							</div>
-						)}
-					</div>
+						)}					</div>
 				</div>
-				
+
 				<GameStatChart gamelogs={gamelogs} />
 			</div>
 		);

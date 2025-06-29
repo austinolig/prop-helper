@@ -57,7 +57,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 
 	const finalFilteredLogs = gameRange === 'all'
 		? homeAwayFilteredLogs
-		: homeAwayFilteredLogs.slice(0, gameRange);
+		: homeAwayFilteredLogs.slice(-gameRange);
 
 	const statValues = finalFilteredLogs.map(game => game[selectedStat]);
 	const maxValue = Math.max(...statValues);
@@ -140,7 +140,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 			</div>
 
 			{/* Chart Section */}
-			<div className="bg-gray-900 border-l border-r border-cyan-400 shadow-2xl p-6">
+			<div className="bg-gray-900 tron-border-x shadow-2xl p-6">
 				<div className="flex justify-between items-center mb-4 flex-wrap gap-4">
 					<h3 className="text-xl font-semibold text-white">Game Statistics Chart</h3>
 					<div className="flex items-center gap-2">
@@ -273,7 +273,6 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 
 			{/* Gamelogs Section */}
 			<div className="bg-gray-900 tron-border rounded-b-lg shadow-2xl p-6">
-				<h3 className="text-xl font-semibold mb-4 text-white">Game Logs</h3>
 				<SortableTable gamelogs={finalFilteredLogs} />
 			</div>
 		</>
