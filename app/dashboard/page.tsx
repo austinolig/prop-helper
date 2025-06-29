@@ -76,6 +76,7 @@ export default async function Dashboard({
 
 		return (
 			<div className="p-8 max-w-6xl mx-auto min-h-screen bg-black text-white">
+				{/* Header */}
 				<div className="relative flex justify-between items-center mb-8">
 					<Link href="/">
 						<h1 className="text-3xl py-2 font-bold text-white">
@@ -84,55 +85,70 @@ export default async function Dashboard({
 					</Link>
 					<PlayerSearchDropdown players={allPlayers} currentPlayerId={parsedPlayerId} />
 				</div>
+				
+				{/* Player Info Section */}
 				<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
-					<h2 className="text-2xl font-semibold mb-4 text-white">{player.full_name}</h2>
-					<div className="grid grid-cols-2 gap-4 text-sm">
-						<div><span className="font-medium text-gray-400">Player ID:</span> <span className="text-white">{player.id}</span></div>
-						<div><span className="font-medium text-gray-400">Status:</span> <span className={player.is_active ? 'text-green-400' : 'text-red-400'}>{player.is_active ? 'Active' : 'Inactive'}</span></div>
+					<div className="flex items-start gap-6">
+						{/* Player Image Placeholder */}
+						<div className="w-24 h-24 bg-gray-700 rounded-lg flex items-center justify-center">
+							<span className="text-gray-400 text-xs">Player Image</span>
+						</div>
+						
+						{/* Player Info and Stats */}
+						<div className="flex-1">
+							<h2 className="text-2xl font-semibold mb-2 text-white">{player.full_name}</h2>
+							<div className="grid grid-cols-2 gap-4 text-sm mb-4">
+								<div><span className="font-medium text-gray-400">Player ID:</span> <span className="text-white">{player.id}</span></div>
+								<div><span className="font-medium text-gray-400">Status:</span> <span className={player.is_active ? 'text-green-400' : 'text-red-400'}>{player.is_active ? 'Active' : 'Inactive'}</span></div>
+							</div>
+							
+							{/* Season Stats */}
+							{stats && (
+								<div>
+									<h3 className="text-lg font-semibold mb-3 text-white">Season Averages ({stats.gamesPlayed} games)</h3>
+									<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+										<div className="text-center">
+											<div className="text-2xl font-bold text-cyan-400">{stats.avgPts}</div>
+											<div className="text-sm text-gray-400">PPG</div>
+											<div className="text-xs text-gray-500 mt-1">H: {stats.highPts} / L: {stats.lowPts}</div>
+										</div>
+										<div className="text-center">
+											<div className="text-2xl font-bold text-green-400">{stats.avgReb}</div>
+											<div className="text-sm text-gray-400">RPG</div>
+											<div className="text-xs text-gray-500 mt-1">H: {stats.highReb} / L: {stats.lowReb}</div>
+										</div>
+										<div className="text-center">
+											<div className="text-2xl font-bold text-orange-400">{stats.avgAst}</div>
+											<div className="text-sm text-gray-400">APG</div>
+											<div className="text-xs text-gray-500 mt-1">H: {stats.highAst} / L: {stats.lowAst}</div>
+										</div>
+										<div className="text-center">
+											<div className="text-2xl font-bold text-yellow-400">{stats.fgPct}%</div>
+											<div className="text-sm text-gray-400">FG%</div>
+										</div>
+									</div>
+									<div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+										<div className="text-center">
+											<div className="text-xl font-bold text-purple-400">{stats.avgStl}</div>
+											<div className="text-sm text-gray-400">SPG</div>
+											<div className="text-xs text-gray-500 mt-1">H: {stats.highStl} / L: {stats.lowStl}</div>
+										</div>
+										<div className="text-center">
+											<div className="text-xl font-bold text-pink-400">{stats.avgBlk}</div>
+											<div className="text-sm text-gray-400">BPG</div>
+											<div className="text-xs text-gray-500 mt-1">H: {stats.highBlk} / L: {stats.lowBlk}</div>
+										</div>
+										<div className="text-center">
+											<div className="text-xl font-bold text-blue-400">{stats.fg3Pct}%</div>
+											<div className="text-sm text-gray-400">3P%</div>
+										</div>
+									</div>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
-				{stats && (
-					<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
-						<h3 className="text-xl font-semibold mb-4 text-white">Season Averages ({stats.gamesPlayed} games)</h3>
-						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-							<div className="text-center">
-								<div className="text-2xl font-bold text-cyan-400">{stats.avgPts}</div>
-								<div className="text-sm text-gray-400">PPG</div>
-								<div className="text-xs text-gray-500 mt-1">H: {stats.highPts} / L: {stats.lowPts}</div>
-							</div>
-							<div className="text-center">
-								<div className="text-2xl font-bold text-green-400">{stats.avgReb}</div>
-								<div className="text-sm text-gray-400">RPG</div>
-								<div className="text-xs text-gray-500 mt-1">H: {stats.highReb} / L: {stats.lowReb}</div>
-							</div>
-							<div className="text-center">
-								<div className="text-2xl font-bold text-orange-400">{stats.avgAst}</div>
-								<div className="text-sm text-gray-400">APG</div>
-								<div className="text-xs text-gray-500 mt-1">H: {stats.highAst} / L: {stats.lowAst}</div>
-							</div>
-							<div className="text-center">
-								<div className="text-2xl font-bold text-yellow-400">{stats.fgPct}%</div>
-								<div className="text-sm text-gray-400">FG%</div>
-							</div>
-						</div>
-						<div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-							<div className="text-center">
-								<div className="text-xl font-bold text-purple-400">{stats.avgStl}</div>
-								<div className="text-sm text-gray-400">SPG</div>
-								<div className="text-xs text-gray-500 mt-1">H: {stats.highStl} / L: {stats.lowStl}</div>
-							</div>
-							<div className="text-center">
-								<div className="text-xl font-bold text-pink-400">{stats.avgBlk}</div>
-								<div className="text-sm text-gray-400">BPG</div>
-								<div className="text-xs text-gray-500 mt-1">H: {stats.highBlk} / L: {stats.lowBlk}</div>
-							</div>
-							<div className="text-center">
-								<div className="text-xl font-bold text-blue-400">{stats.fg3Pct}%</div>
-								<div className="text-sm text-gray-400">3P%</div>
-							</div>
-						</div>
-					</div>
-				)}
+				
 				<GameStatChart gamelogs={gamelogs} />
 			</div>
 		);
