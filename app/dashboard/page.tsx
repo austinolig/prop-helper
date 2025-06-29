@@ -1,6 +1,8 @@
-import { fetchPlayerById, fetchGamelogsByPlayerId } from '../lib/data';
+import { fetchPlayerById, fetchGamelogsByPlayerId, fetchPlayers } from '../lib/data';
 import { GameLog } from '../types';
 import GameStatChart from '../components/GameStatChart';
+import PlayerSearchDropdown from '../components/PlayerSearchDropdown';
+import Link from 'next/link';
 
 function calculateStats(gamelogs: GameLog[]) {
 	if (gamelogs.length === 0) return null;
@@ -46,17 +48,19 @@ function calculateStats(gamelogs: GameLog[]) {
 	};
 }
 
-interface DashboardProps {
-	searchParams: { playerId?: string };
-}
-
-export default async function Dashboard({ searchParams }: DashboardProps) {
-	const playerId = searchParams.playerId ? parseInt(searchParams.playerId, 10) : 2544;
+export default async function Dashboard({
+	searchParams
+}: {
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+	const { playerId } = await searchParams;
+	const parsedPlayerId = playerId ? parseInt(playerId as string, 10) : 2544;
 
 	try {
-		const [player, gamelogs] = await Promise.all([
-			fetchPlayerById(playerId),
-			fetchGamelogsByPlayerId(playerId)
+		const [player, gamelogs, allPlayers] = await Promise.all([
+			fetchPlayerById(parsedPlayerId),
+			fetchGamelogsByPlayerId(parsedPlayerId),
+			fetchPlayers()
 		]);
 
 		if (!player) {
@@ -72,8 +76,15 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
 
 		return (
 			<div className="p-8 max-w-6xl mx-auto min-h-screen bg-black text-white">
-				<h1 className="text-3xl font-bold mb-8 text-cyan-400">Player Dashboard</h1>
-				<div className="bg-gray-900 tron-border rounded-none shadow-2xl p-6 mb-8">
+				<div className="relative flex justify-between items-center mb-8">
+					<Link href="/">
+						<h1 className="text-3xl py-2 font-bold text-white">
+							Prop<span className="text-cyan-400">Helper</span>
+						</h1>
+					</Link>
+					<PlayerSearchDropdown players={allPlayers} currentPlayerId={parsedPlayerId} />
+				</div>
+				<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
 					<h2 className="text-2xl font-semibold mb-4 text-white">{player.full_name}</h2>
 					<div className="grid grid-cols-2 gap-4 text-sm">
 						<div><span className="font-medium text-gray-400">Player ID:</span> <span className="text-white">{player.id}</span></div>
@@ -81,7 +92,7 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
 					</div>
 				</div>
 				{stats && (
-					<div className="bg-gray-900 tron-border rounded-none shadow-2xl p-6 mb-8">
+					<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
 						<h3 className="text-xl font-semibold mb-4 text-white">Season Averages ({stats.gamesPlayed} games)</h3>
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 							<div className="text-center">

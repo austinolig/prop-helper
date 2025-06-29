@@ -17,7 +17,7 @@ export default function Home() {
 
 				<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
 					<Link
-						className="bg-cyan-600 hover:bg-cyan-500 text-black font-semibold px-8 py-3 rounded-none tron-glow transition-all duration-300"
+						className="bg-cyan-600 hover:bg-cyan-500 text-black font-semibold px-8 py-3 rounded-lg tron-glow transition-all duration-300"
 						href="/dashboard"
 					>
 						Get Started
@@ -25,17 +25,17 @@ export default function Home() {
 				</div>
 			</div>
 			<div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-				<div className="bg-gray-900/80 backdrop-blur-sm rounded-none tron-border p-6 text-center">
+				<div className="bg-gray-900/80 backdrop-blur-sm rounded-lg tron-border p-6 text-center">
 					<div className="text-4xl mb-4 text-cyan-400">📊</div>
 					<h2 className="text-xl font-semibold text-white mb-2">Performance Analytics</h2>
 					<p className="text-gray-400">Deep dive into player stats and historical performance against prop lines</p>
 				</div>
-				<div className="bg-gray-900/80 backdrop-blur-sm rounded-none tron-border p-6 text-center">
+				<div className="bg-gray-900/80 backdrop-blur-sm rounded-lg tron-border p-6 text-center">
 					<div className="text-4xl mb-4 text-cyan-400">🔍</div>
 					<h2 className="text-xl font-semibold text-white mb-2">Advanced Filters</h2>
 					<p className="text-gray-400">Filter by matchups, recent form, home/away splits, and more</p>
 				</div>
-				<div className="bg-gray-900/80 backdrop-blur-sm rounded-none tron-border p-6 text-center">
+				<div className="bg-gray-900/80 backdrop-blur-sm rounded-lg tron-border p-6 text-center">
 					<div className="text-4xl mb-4 text-cyan-400">💎</div>
 					<h2 className="text-xl font-semibold text-white mb-2">Find Value</h2>
 					<p className="text-gray-400">Identify mispriced props and betting opportunities with confidence</p>

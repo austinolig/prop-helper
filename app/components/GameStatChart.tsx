@@ -45,7 +45,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 		setThreshold(initialThreshold);
 	}, [gamelogs, selectedStat]);
 
-	const homeAwayFilteredLogs = homeAwayFilter === 'all' 
+	const homeAwayFilteredLogs = homeAwayFilter === 'all'
 		? gamelogs
 		: gamelogs.filter(game => {
 			if (homeAwayFilter === 'home') {
@@ -89,7 +89,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 	};
 
 	return (
-		<div className="bg-gray-900 tron-border rounded-none shadow-2xl p-6 mb-8">
+		<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
 			<div className="flex justify-between items-center mb-4 flex-wrap gap-4">
 				<h3 className="text-xl font-semibold text-white">Game Statistics Chart</h3>
 				<div className="flex gap-4 items-center flex-wrap">
@@ -99,7 +99,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 							id="range"
 							value={gameRange}
 							onChange={(e) => setGameRange(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-							className="bg-gray-800 text-white px-3 py-2 rounded-none border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400"
+							className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400"
 						>
 							<option value={5}>Last 5</option>
 							<option value={10}>Last 10</option>
@@ -113,7 +113,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 							id="homeaway"
 							value={homeAwayFilter}
 							onChange={(e) => setHomeAwayFilter(e.target.value as 'all' | 'home' | 'away')}
-							className="bg-gray-800 text-white px-3 py-2 rounded-none border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400"
+							className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400"
 						>
 							<option value="all">All</option>
 							<option value="home">Home</option>
@@ -127,7 +127,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 							type="number"
 							value={threshold}
 							onChange={handleThresholdChange}
-							className="bg-gray-800 text-white px-3 py-2 rounded-none border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400 w-20"
+							className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400 w-20"
 							min="0"
 							step="0.5"
 							placeholder="0"
@@ -136,7 +136,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 					<select
 						value={selectedStat}
 						onChange={(e) => setSelectedStat(e.target.value as StatType)}
-						className="bg-gray-800 text-white px-3 py-2 rounded-none border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400"
+						className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400"
 					>
 						{Object.entries(statLabels).map(([value, label]) => (
 							<option key={value} value={value}>{label}</option>
@@ -153,38 +153,38 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 						const value = Math.round(maxValue * ratio);
 						return (
 							<g key={index}>
-							<line
-								x1={0}
-								y1={y}
-								x2={chartWidth}
-								y2={y}
-								stroke="rgb(55 65 81)"
-								strokeWidth={0.5}
-							/>
-							<text
-								x={-5}
-								y={y + 3}
-								fill="rgb(156 163 175)"
-								fontSize="10"
-								textAnchor="end"
-							>
-								{value}
-							</text>
+								<line
+									x1={0}
+									y1={y}
+									x2={chartWidth}
+									y2={y}
+									stroke="rgb(55 65 81)"
+									strokeWidth={0.5}
+								/>
+								<text
+									x={-5}
+									y={y + 3}
+									fill="rgb(156 163 175)"
+									fontSize="10"
+									textAnchor="end"
+								>
+									{value}
+								</text>
 							</g>
 						);
 					})}
 
 					{/* Threshold line */}
 					{threshold > 0 && (
-					<line
-						x1={0}
-						y1={chartHeight - (threshold / maxValue) * chartHeight}
-						x2={chartWidth}
-						y2={chartHeight - (threshold / maxValue) * chartHeight}
-						stroke="rgb(239 68 68)"
-						strokeWidth={2}
-						strokeDasharray="5,5"
-					/>
+						<line
+							x1={0}
+							y1={chartHeight - (threshold / maxValue) * chartHeight}
+							x2={chartWidth}
+							y2={chartHeight - (threshold / maxValue) * chartHeight}
+							stroke="rgb(239 68 68)"
+							strokeWidth={2}
+							strokeDasharray="5,5"
+						/>
 					)}
 
 					{/* Bars */}
@@ -204,26 +204,26 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 									fill={getBarColor(value)}
 									className="hover:opacity-80 transition-opacity"
 								/>
-							<text
-								x={x + barWidth / 2}
-								y={y - 3}
-								fill="rgb(229 231 235)"
-								fontSize="10"
-								textAnchor="middle"
-								className="pointer-events-none"
-							>
-								{value}
-							</text>
-							<text
-								x={x + barWidth / 2}
-								y={chartHeight + 15}
-								fill="rgb(156 163 175)"
-								fontSize="8"
-								textAnchor="middle"
-								className="pointer-events-none"
-							>
-								{index % 7 === 0 ? new Date(game.gameDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
-							</text>
+								<text
+									x={x + barWidth / 2}
+									y={y - 3}
+									fill="rgb(229 231 235)"
+									fontSize="10"
+									textAnchor="middle"
+									className="pointer-events-none"
+								>
+									{value}
+								</text>
+								<text
+									x={x + barWidth / 2}
+									y={chartHeight + 15}
+									fill="rgb(156 163 175)"
+									fontSize="8"
+									textAnchor="middle"
+									className="pointer-events-none"
+								>
+									{index % 7 === 0 ? new Date(game.gameDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
+								</text>
 							</g>
 						);
 					})}
@@ -256,7 +256,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 					</>
 				)}
 			</div>
-			
+
 			<div className="mt-6">
 				<SortableTable gamelogs={finalFilteredLogs} />
 			</div>
