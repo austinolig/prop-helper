@@ -50,8 +50,8 @@ export default function PlayerSearchDropdown({ players, currentPlayerId }: Playe
 			</button>
 
 			{isOpen && (
-				<div className="absolute z-10">
-					<div className="w-full rounded-lg mt-1 bg-gray-900 tron-border shadow-lg max-h-80 overflow-hidden">
+				<div className="absolute w-full z-10">
+					<div className="rounded-lg mt-1 bg-gray-900 tron-border shadow-lg max-h-80 overflow-hidden">
 						<div className="p-3 border-b border-gray-700">
 							<input
 								type="text"
