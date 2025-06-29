@@ -1,5 +1,7 @@
 import { fetchPlayerById, fetchGamelogsByPlayerId } from '../lib/data';
 import { GameLog } from '../types';
+import GameStatChart from '../components/GameStatChart';
+import SortableTable from '../components/SortableTable';
 
 function calculateStats(gamelogs: GameLog[]) {
 	if (gamelogs.length === 0) return null;
@@ -120,43 +122,11 @@ export default async function Dashboard() {
 					</div>
 				</div>
 			)}
-			<div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-6">
-				<h3 className="text-xl font-semibold mb-4 text-white">All Games ({gamelogs.length})</h3>					<div className="overflow-x-auto">
-						<table className="min-w-full table-auto">
-							<thead>
-								<tr className="border-b border-gray-700">
-									<th className="text-left p-2 text-gray-300">Date</th>
-									<th className="text-left p-2 text-gray-300">Matchup</th>
-									<th className="text-left p-2 text-gray-300">W/L</th>
-									<th className="text-left p-2 text-gray-300">PTS</th>
-									<th className="text-left p-2 text-gray-300">REB</th>
-									<th className="text-left p-2 text-gray-300">AST</th>
-									<th className="text-left p-2 text-gray-300">FG%</th>
-									<th className="text-left p-2 text-gray-300">3P%</th>
-								</tr>
-							</thead>
-							<tbody>
-								{allGames.map((game, index) => (
-									<tr key={game.gameId} className={index % 2 === 0 ? 'bg-gray-750' : 'bg-gray-800'}>
-										<td className="p-2 text-gray-200">{new Date(game.gameDate).toLocaleDateString()}</td>
-										<td className="p-2 text-gray-200">{game.matchup}</td>
-										<td className="p-2">
-											<span className={`font-medium ${game.wl === 'W' ? 'text-green-400' : 'text-red-400'}`}>
-												{game.wl}
-											</span>
-										</td>
-										<td className="p-2 font-medium text-white">{game.pts}</td>
-										<td className="p-2 text-gray-200">{game.reb}</td>
-										<td className="p-2 text-gray-200">{game.ast}</td>
-										<td className="p-2 text-gray-200">{(game.fgPct * 100).toFixed(1)}%</td>
-										<td className="p-2 text-gray-200">{game.fg3Pct ? (game.fg3Pct * 100).toFixed(1) : '0.0'}%</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+			
+			<GameStatChart gamelogs={gamelogs} />
+			
+			<SortableTable gamelogs={allGames} />
+		</div>
 		);
 	} catch (error) {
 		return (
