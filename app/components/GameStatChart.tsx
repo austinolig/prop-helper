@@ -91,7 +91,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 	return (
 		<>
 			{/* Filters Section */}
-			<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
+			<div className="bg-gray-900 tron-border rounded-t-lg shadow-2xl p-6">
 				<div className="flex justify-between items-center flex-wrap gap-4">
 					<h3 className="text-xl font-semibold text-white">Filters</h3>
 					<div className="flex gap-4 items-center flex-wrap">
@@ -140,7 +140,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 			</div>
 
 			{/* Chart Section */}
-			<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
+			<div className="bg-gray-900 border-l border-r border-cyan-400 shadow-2xl p-6">
 				<div className="flex justify-between items-center mb-4 flex-wrap gap-4">
 					<h3 className="text-xl font-semibold text-white">Game Statistics Chart</h3>
 					<div className="flex items-center gap-2">
@@ -272,7 +272,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 			</div>
 
 			{/* Gamelogs Section */}
-			<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6">
+			<div className="bg-gray-900 tron-border rounded-b-lg shadow-2xl p-6">
 				<h3 className="text-xl font-semibold mb-4 text-white">Game Logs</h3>
 				<SortableTable gamelogs={finalFilteredLogs} />
 			</div>
