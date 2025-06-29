@@ -1,4 +1,4 @@
-import { PlayerGameLog, PlayerGameLogData } from "../types";
+import { GameLog, GameLogData } from "../types";
 import { nikolaJokicData } from "./jokic-data";
 import { lebronJamesData } from "./lebron-data";
 import { stephenCurryData } from "./curry-data";
@@ -7,11 +7,11 @@ import { shaiGilgeousAlexanderData } from "./sga-data";
 import { giannisAntetokounmpoData } from "./giannis-data";
 import { lukaDoncicData } from "./luka-data";
 
-interface GameLog {
+interface GameLogObject {
 	[key: string]: string | number;
 }
 
-function buildGameLog(data: PlayerGameLogData[]) {
+function buildGameLog(data: GameLogData[]) {
 	const headers = [
 		"seasonId",
 		"playerId",
@@ -43,13 +43,13 @@ function buildGameLog(data: PlayerGameLogData[]) {
 	]
 
 	return data.map(game => {
-		const gameLog: GameLog = {};
+		const gameLog: GameLogObject = {};
 
 		headers.forEach((header, index) => {
 			gameLog[header] = game[index];
 		});
 
-		return gameLog as unknown as PlayerGameLog;
+		return gameLog as unknown as GameLog;
 	});
 }
 

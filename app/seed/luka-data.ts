@@ -1,6 +1,6 @@
-import { PlayerGameLogData } from "../types";
+import { GameLogData } from "../types";
 
-export const lukaDoncicData: PlayerGameLogData[] = [
+export const lukaDoncicData: GameLogData[] = [
 	["22024", 1629029, "0022401185", "Apr 11, 2025", "LAL vs. HOU", "W", 31, 13, 19, 0.684, 5, 9, 0.556, 8, 14, 0.571, 0, 8, 8, 7, 1, 0, 4, 1, 39, 15, 1],
 	["22024", 1629029, "0022401159", "Apr 09, 2025", "LAL @ DAL", "W", 38, 16, 28, 0.571, 7, 10, 0.7, 6, 9, 0.667, 1, 7, 8, 6, 4, 0, 3, 4, 45, 26, 1],
 	["22024", 1629029, "0022401153", "Apr 08, 2025", "LAL @ OKC", "L", 31, 7, 15, 0.467, 3, 7, 0.429, 6, 7, 0.857, 0, 3, 3, 5, 0, 1, 3, 1, 23, 6, 1],

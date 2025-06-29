@@ -1,6 +1,6 @@
-import { PlayerGameLogData } from "../types";
+import { GameLogData } from "../types";
 
-export const shaiGilgeousAlexanderData: PlayerGameLogData[] = [
+export const shaiGilgeousAlexanderData: GameLogData[] = [
 	["22024", 1628983, "0022401153", "Apr 08, 2025", "OKC vs. LAL", "W", 37, 14, 26, 0.538, 5, 9, 0.556, 9, 11, 0.818, 1, 5, 6, 6, 0, 1, 1, 5, 42, 7, 1],
 	["22024", 1628983, "0022401135", "Apr 06, 2025", "OKC vs. LAL", "L", 30, 12, 23, 0.522, 2, 5, 0.4, 0, 0, 0, 0, 3, 3, 9, 1, 1, 1, 1, 26, -20, 1],
 	["22024", 1628983, "0022401123", "Apr 04, 2025", "OKC @ HOU", "L", 35, 10, 22, 0.455, 1, 6, 0.167, 1, 2, 0.5, 1, 3, 4, 8, 3, 0, 3, 2, 22, -6, 1],

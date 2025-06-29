@@ -1,120 +1,170 @@
-// import postgres from 'postgres';
-// import {
-// 	players,
-// 	gamelogs
-// } from '../lib/placeholder-data';
-//
-// const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-//
-// async function seedPlayer() {
-// 	await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-// 	await sql`
-//     CREATE TABLE IF NOT EXISTS players (
-//       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-//       name VARCHAR(255) NOT NULL,
-//       email TEXT NOT NULL UNIQUE,
-//       password TEXT NOT NULL
-//     );
-//   `;
-//
-// 	const insertedUsers = await Promise.all(
-// 		users.map(async (user) => {
-// 			const hashedPassword = await bcrypt.hash(user.password, 10);
-// 			return sql`
-//         INSERT INTO users (id, name, email, password)
-//         VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
-//         ON CONFLICT (id) DO NOTHING;
-//       `;
-// 		}),
-// 	);
-//
-// 	return insertedUsers;
-// }
-//
-// async function seedGameLogs() {
-// 	await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-//
-// 	await sql`
-//     CREATE TABLE IF NOT EXISTS invoices (
-//       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-//       customer_id UUID NOT NULL,
-//       amount INT NOT NULL,
-//       status VARCHAR(255) NOT NULL,
-//       date DATE NOT NULL
-//     );
-//   `;
-//
-// 	const insertedInvoices = await Promise.all(
-// 		invoices.map(
-// 			(invoice) => sql`
-//         INSERT INTO invoices (customer_id, amount, status, date)
-//         VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-//         ON CONFLICT (id) DO NOTHING;
-//       `,
-// 		),
-// 	);
-//
-// 	return insertedInvoices;
-// }
-//
-// async function seedCustomers() {
-// 	await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-//
-// 	await sql`
-//     CREATE TABLE IF NOT EXISTS customers (
-//       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-//       name VARCHAR(255) NOT NULL,
-//       email VARCHAR(255) NOT NULL,
-//       image_url VARCHAR(255) NOT NULL
-//     );
-//   `;
-//
-// 	const insertedCustomers = await Promise.all(
-// 		customers.map(
-// 			(customer) => sql`
-//         INSERT INTO customers (id, name, email, image_url)
-//         VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
-//         ON CONFLICT (id) DO NOTHING;
-//       `,
-// 		),
-// 	);
-//
-// 	return insertedCustomers;
-// }
-//
-// async function seedRevenue() {
-// 	await sql`
-//     CREATE TABLE IF NOT EXISTS revenue (
-//       month VARCHAR(4) NOT NULL UNIQUE,
-//       revenue INT NOT NULL
-//     );
-//   `;
-//
-// 	const insertedRevenue = await Promise.all(
-// 		revenue.map(
-// 			(rev) => sql`
-//         INSERT INTO revenue (month, revenue)
-//         VALUES (${rev.month}, ${rev.revenue})
-//         ON CONFLICT (month) DO NOTHING;
-//       `,
-// 		),
-// 	);
-//
-// 	return insertedRevenue;
-// }
+import postgres from "postgres";
+import { players, gamelogs } from "./placeholder-data";
+import { GameLog, PlayersTable } from "../types";
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+
+async function seedPlayers() {
+	await sql`
+		CREATE TABLE IF NOT EXISTS players (
+			id INTEGER PRIMARY KEY,
+			full_name VARCHAR(255) NOT NULL,
+			first_name VARCHAR(255) NOT NULL,
+			last_name VARCHAR(255) NOT NULL,
+			is_active BOOLEAN NOT NULL
+		);
+	`;
+
+	console.log(`Starting to insert ${players.length} players...`);
+
+	const insertedPlayers = await Promise.all(
+		players.map((player) => sql<PlayersTable[]>`
+			INSERT INTO players (
+				id,
+				full_name,
+				first_name,
+				last_name,
+				is_active
+			)
+			VALUES (
+				${player.id},
+				${player.full_name},
+				${player.first_name},
+				${player.last_name},
+				${player.is_active}
+			)
+			ON CONFLICT (id) DO NOTHING;
+		  `,
+		),
+	);
+
+	console.log('Players insertion completed.');
+	return insertedPlayers;
+}
+
+async function seedGamelogs() {
+	await sql`
+		CREATE TABLE IF NOT EXISTS gamelogs (
+			game_id VARCHAR(20) NOT NULL PRIMARY KEY,
+			season_id VARCHAR(10) NOT NULL,
+			player_id INTEGER NOT NULL,
+			game_date VARCHAR(20) NOT NULL,
+			matchup VARCHAR(20) NOT NULL,
+			wl VARCHAR(1) NOT NULL,
+			min INTEGER,
+			fgm INTEGER,
+			fga INTEGER,
+			fg_pct DECIMAL(5,3),
+			fg3m INTEGER,
+			fg3a INTEGER,
+			fg3_pct DECIMAL(5,3),
+			ftm INTEGER,
+			fta INTEGER,
+			ft_pct DECIMAL(5,3),
+			oreb INTEGER,
+			dreb INTEGER,
+			reb INTEGER,
+			ast INTEGER,
+			stl INTEGER,
+			blk INTEGER,
+			tov INTEGER,
+			pf INTEGER,
+			pts INTEGER,
+			plus_minus INTEGER,
+			video_available INTEGER,
+			FOREIGN KEY (player_id) REFERENCES players(id),
+			UNIQUE (game_id)
+		);
+	`;
+
+	console.log(`Starting to insert ${gamelogs.length} gamelogs...`);
+
+	const insertedGamelogs = await Promise.all(
+		gamelogs.map(
+			(gamelog, index) => {
+				if (index % 100 === 0) {
+					console.log(`Processing gamelog ${index}/${gamelogs.length}`);
+				}
+				return sql<GameLog[]>`
+					INSERT INTO gamelogs (
+						game_id,
+						season_id,
+						player_id,
+						game_date,
+						matchup,
+						wl,
+						min,
+						fgm,
+						fga,
+						fg_pct,
+						fg3m,
+						fg3a,
+						fg3_pct,
+						ftm,
+						fta,
+						ft_pct,
+						oreb,
+						dreb,
+						reb,
+						ast,
+						stl,
+						blk,
+						tov,
+						pf,
+						pts,
+						plus_minus,
+						video_available
+					)
+					VALUES (
+						${gamelog.gameId},
+						${gamelog.seasonId},
+						${gamelog.playerId},
+						${gamelog.gameDate},
+						${gamelog.matchup},
+						${gamelog.wl},
+						${gamelog.min},
+						${gamelog.fgm},
+						${gamelog.fga},
+						${gamelog.fgPct},
+						${gamelog.fg3m},
+						${gamelog.fg3a},
+						${gamelog.fg3Pct},
+						${gamelog.ftm},
+						${gamelog.fta},
+						${gamelog.ftPct},
+						${gamelog.oreb},
+						${gamelog.dreb},
+						${gamelog.reb},
+						${gamelog.ast},
+						${gamelog.stl},
+						${gamelog.blk},
+						${gamelog.tov},
+						${gamelog.pf},
+						${gamelog.pts},
+						${gamelog.plusMinus},
+						${gamelog.videoAvailable}
+					)
+					ON CONFLICT (game_id) DO NOTHING;
+				`;
+			}
+		),
+	);
+
+	console.log('Gamelogs insertion completed.');
+	return insertedGamelogs;
+}
 
 export async function GET() {
-	return Response.json({ message: 'Do nothing' });
-	// try {
-	// 	await sql.begin(() => [
-	// 		seedUsers(),
-	// 		seedCustomers(),
-	// 		seedInvoices(),
-	// 		seedRevenue(),
-	// 	]);
-	//
-	// 	return Response.json({ message: 'Database seeded successfully' });
-	// } catch (error) {
-	// 	return Response.json({ error }, { status: 500 });
-	// }
+	try {
+		await sql.begin(() => [
+			seedPlayers(),
+			seedGamelogs()
+		]);
+
+		return Response.json({ message: 'Database seeded successfully' });
+	} catch (error) {
+		console.error('Seeding error:', error);
+		return Response.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+	}
 }
+

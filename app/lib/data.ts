@@ -1,103 +1,103 @@
-// import { PlayerGameLog } from "../types";
+import postgres from 'postgres';
+import { GameLog, PlayersTable } from '../types';
 
-// interface PlayerGameLogResponse {
-// 	data_sets: {
-// 		data: {
-// 			headers: string[];
-// 			data: PlayerGameLogResponseData[];
-// 		};
-// 	}[];
-// }
-//
-// type PlayerGameLogResponseData = [
-// 	string,
-// 	number,
-// 	string,
-// 	string,
-// 	string,
-// 	'W' | 'L',
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	number,
-// 	boolean,
-// ];
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-// export async function getPlayerGameLog(
-// 	playerId: number = 2544 // Default to LeBron James' player ID
-// ): Promise<PlayerGameLog> {
-// 	const baseUrl = process.env.VERCEL_ENV === "production"
-// 		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-// 		: "http://localhost:3000";
-//
-// 	console.log(`${baseUrl}/api/stats/${playerId}`);
-//
-// 	try {
-// 		const response = await fetch(`${baseUrl}/api/stats/${playerId}`);
-//
-// 		if (!response.ok) {
-// 			throw new Error(`(Error) status: ${response.status}`);
-// 		}
-//
-// 		const data: PlayerGameLogResponse = await response.json();
-// 		console.log('Response data:', data);
-//
-// 		if (!data.data_sets) {
-// 			throw new Error('No data_sets available');
-// 		}
-//
-// 		const playerGameLogData = data.data_sets[0].data;
-//
-// 		return {
-// 			headers: playerGameLogData.headers,
-// 			data: playerGameLogData.data.map((game) => ({
-// 				seasonId: game[0],
-// 				playerId: game[1],
-// 				gameId: game[2],
-// 				gameDate: game[3],
-// 				matchup: game[4],
-// 				wl: game[5],
-// 				min: game[6],
-// 				fgm: game[7],
-// 				fga: game[8],
-// 				fgPct: game[9],
-// 				fg3m: game[10],
-// 				fg3a: game[11],
-// 				fg3Pct: game[12],
-// 				ftm: game[13],
-// 				fta: game[14],
-// 				ftPct: game[15],
-// 				oreb: game[16],
-// 				dreb: game[17],
-// 				reb: game[18],
-// 				ast: game[19],
-// 				stl: game[20],
-// 				blk: game[21],
-// 				tov: game[22],
-// 				pf: game[23],
-// 				pts: game[24],
-// 				plusMinus: game[25],
-// 				videoAvailable: game[26],
-// 			})),
-// 		};
-// 	} catch (error) {
-// 		console.error('(Error) getPlayerGameLog:', error);
-// 		throw new Error('Failed to fetch player game log');
-// 	}
-// }
+export async function fetchPlayers(): Promise<PlayersTable[]> {
+	try {
+		console.log('Fetching players...');
+		const data = await sql<PlayersTable[]>`SELECT * FROM players ORDER BY full_name ASC`;
+		console.log('Players fetch completed.');
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch players.');
+	}
+}
+
+export async function fetchGamelogsByPlayerId(playerId: number): Promise<GameLog[]> {
+	try {
+		console.log(`Fetching gamelogs for player ${playerId}...`);
+		const data = await sql<GameLog[]>`
+			SELECT 
+				season_id as "seasonId",
+				player_id as "playerId", 
+				game_id as "gameId",
+				game_date as "gameDate",
+				matchup,
+				wl,
+				min,
+				fgm,
+				fga,
+				fg_pct as "fgPct",
+				fg3m,
+				fg3a,
+				fg3_pct as "fg3Pct",
+				ftm,
+				fta,
+				ft_pct as "ftPct",
+				oreb,
+				dreb,
+				reb,
+				ast,
+				stl,
+				blk,
+				tov,
+				pf,
+				pts,
+				plus_minus as "plusMinus",
+				video_available as "videoAvailable"
+			FROM gamelogs 
+			WHERE player_id = ${playerId}
+			ORDER BY game_date DESC
+		`;
+		console.log('Gamelogs fetch completed.');
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch gamelogs.');
+	}
+}
+
+export async function fetchAllGamelogs(): Promise<GameLog[]> {
+	try {
+		console.log('Fetching all gamelogs...');
+		const data = await sql<GameLog[]>`
+			SELECT 
+				season_id as "seasonId",
+				player_id as "playerId", 
+				game_id as "gameId",
+				game_date as "gameDate",
+				matchup,
+				wl,
+				min,
+				fgm,
+				fga,
+				fg_pct as "fgPct",
+				fg3m,
+				fg3a,
+				fg3_pct as "fg3Pct",
+				ftm,
+				fta,
+				ft_pct as "ftPct",
+				oreb,
+				dreb,
+				reb,
+				ast,
+				stl,
+				blk,
+				tov,
+				pf,
+				pts,
+				plus_minus as "plusMinus",
+				video_available as "videoAvailable"
+			FROM gamelogs 
+			ORDER BY game_date DESC
+		`;
+		console.log('All gamelogs fetch completed.');
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch all gamelogs.');
+	}
+}

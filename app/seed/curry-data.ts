@@ -1,6 +1,6 @@
-import { PlayerGameLogData } from "../types";
+import { GameLogData } from "../types";
 
-export const stephenCurryData: PlayerGameLogData[] = [
+export const stephenCurryData: GameLogData[] = [
 	[
 		"22024",
 		201939,

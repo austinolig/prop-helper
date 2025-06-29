@@ -1,4 +1,4 @@
-export interface PlayerGameLog {
+export interface GameLog {
 	seasonId: string;
 	playerId: number;
 	gameId: string;
@@ -28,7 +28,7 @@ export interface PlayerGameLog {
 	videoAvailable: number;
 }
 
-export type PlayerGameLogData = [
+export type GameLogData = [
 	string,
 	number,
 	string,
@@ -58,4 +58,10 @@ export type PlayerGameLogData = [
 	number,
 ];
 
-export type StatType = 'pts' | 'reb' | 'ast';
+export interface PlayersTable {
+	id: number;
+	full_name: string;
+	first_name: string;
+	last_name: string;
+	is_active: boolean;
+}

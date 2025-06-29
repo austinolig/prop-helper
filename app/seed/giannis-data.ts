@@ -1,6 +1,6 @@
-import { PlayerGameLogData } from "../types";
+import { GameLogData } from "../types";
 
-export const giannisAntetokounmpoData: PlayerGameLogData[] = [
+export const giannisAntetokounmpoData: GameLogData[] = [
 	["22024", 203507, "0022401171", "Apr 11, 2025", "MIL @ DET", "W", 38, 11, 22, 0.5, 0, 2, 0, 10, 11, 0.909, 1, 10, 11, 15, 1, 2, 3, 0, 32, 22, 1],
 	["22024", 203507, "0022401161", "Apr 10, 2025", "MIL vs. NOP", "W", 26, 11, 17, 0.647, 1, 2, 0.5, 5, 10, 0.5, 2, 9, 11, 5, 0, 1, 0, 1, 28, 6, 1],
 	["22024", 203507, "0022401152", "Apr 08, 2025", "MIL vs. MIN", "W", 38, 9, 15, 0.6, 1, 2, 0.5, 4, 11, 0.364, 3, 10, 13, 10, 1, 1, 0, 0, 23, 26, 1],

@@ -1,6 +1,6 @@
-import { PlayerGameLogData } from "../types";
+import { GameLogData } from "../types";
 
-export const vinceCarterData: PlayerGameLogData[] = [
+export const vinceCarterData: GameLogData[] = [
 	[
 		"22000",
 		1713,
