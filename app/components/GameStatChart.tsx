@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { GameLog } from '../types';
+import SortableTable from './SortableTable';
 
 interface GameStatChartProps {
 	gamelogs: GameLog[];
@@ -152,22 +153,23 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 						const value = Math.round(maxValue * ratio);
 						return (
 							<g key={index}>
-						<line
-							x1={0}
-							y1={y}
-							x2={chartWidth}
-							y2={y}
-							stroke="rgb(55 65 81)"
-							strokeWidth={0.5}
-						/>
-						<text
-							x={-5}
-							y={y + 3}
-							fill="rgb(156 163 175)"
-							fontSize="10"
-							textAnchor="end"
-						>									{value}
-								</text>
+							<line
+								x1={0}
+								y1={y}
+								x2={chartWidth}
+								y2={y}
+								stroke="rgb(55 65 81)"
+								strokeWidth={0.5}
+							/>
+							<text
+								x={-5}
+								y={y + 3}
+								fill="rgb(156 163 175)"
+								fontSize="10"
+								textAnchor="end"
+							>
+								{value}
+							</text>
 							</g>
 						);
 					})}
@@ -182,7 +184,8 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 						stroke="rgb(239 68 68)"
 						strokeWidth={2}
 						strokeDasharray="5,5"
-					/>					)}
+					/>
+					)}
 
 					{/* Bars */}
 					{finalFilteredLogs.map((game, index) => {
@@ -201,56 +204,62 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 									fill={getBarColor(value)}
 									className="hover:opacity-80 transition-opacity"
 								/>
-						<text
-							x={x + barWidth / 2}
-							y={y - 3}
-							fill="rgb(229 231 235)"
-							fontSize="10"
-							textAnchor="middle"
-							className="pointer-events-none"
-						>
-							{value}
-						</text>
-						<text
-							x={x + barWidth / 2}
-							y={chartHeight + 15}
-							fill="rgb(156 163 175)"
-							fontSize="8"
-							textAnchor="middle"
-							className="pointer-events-none"
-						>									{index % 7 === 0 ? new Date(game.gameDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
-								</text>
+							<text
+								x={x + barWidth / 2}
+								y={y - 3}
+								fill="rgb(229 231 235)"
+								fontSize="10"
+								textAnchor="middle"
+								className="pointer-events-none"
+							>
+								{value}
+							</text>
+							<text
+								x={x + barWidth / 2}
+								y={chartHeight + 15}
+								fill="rgb(156 163 175)"
+								fontSize="8"
+								textAnchor="middle"
+								className="pointer-events-none"
+							>
+								{index % 7 === 0 ? new Date(game.gameDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
+							</text>
 							</g>
 						);
 					})}
 				</svg>
 			</div>
 
-		<div className="mt-4 text-sm text-gray-400">
-			Showing {statLabels[selectedStat]} for last {finalFilteredLogs.length} games
-			{homeAwayFilter !== 'all' && ` (${homeAwayFilter} only)`}
-			{' • '}
-			<span className="text-white">Avg: {avgValue.toFixed(1)}</span>
-			{' • '}
-			<span className="text-green-400">High: {maxValue}</span>
-			{' • '}
-			<span className="text-red-400">Low: {minValue}</span>
-			{threshold > 0 && (
-				<>
-					{' • '}
-					<span className="text-green-400">
-						{finalFilteredLogs.filter(game => game[selectedStat] > threshold).length} above
-					</span>
-					{', '}
-					<span className="text-gray-300">
-						{finalFilteredLogs.filter(game => game[selectedStat] === threshold).length} equal
-					</span>
-					{', '}
-					<span className="text-red-400">
-						{finalFilteredLogs.filter(game => game[selectedStat] < threshold).length} below threshold
-					</span>
-				</>
-			)}
-		</div>		</div>
+			<div className="mt-4 text-sm text-gray-400">
+				Showing {statLabels[selectedStat]} for last {finalFilteredLogs.length} games
+				{homeAwayFilter !== 'all' && ` (${homeAwayFilter} only)`}
+				{' • '}
+				<span className="text-white">Avg: {avgValue.toFixed(1)}</span>
+				{' • '}
+				<span className="text-green-400">High: {maxValue}</span>
+				{' • '}
+				<span className="text-red-400">Low: {minValue}</span>
+				{threshold > 0 && (
+					<>
+						{' • '}
+						<span className="text-green-400">
+							{finalFilteredLogs.filter(game => game[selectedStat] > threshold).length} above
+						</span>
+						{', '}
+						<span className="text-gray-300">
+							{finalFilteredLogs.filter(game => game[selectedStat] === threshold).length} equal
+						</span>
+						{', '}
+						<span className="text-red-400">
+							{finalFilteredLogs.filter(game => game[selectedStat] < threshold).length} below threshold
+						</span>
+					</>
+				)}
+			</div>
+			
+			<div className="mt-6">
+				<SortableTable gamelogs={finalFilteredLogs} />
+			</div>
+		</div>
 	);
 }

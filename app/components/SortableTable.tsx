@@ -55,8 +55,8 @@ export default function SortableTable({ gamelogs }: SortableTableProps) {
 	};
 
 	return (
-		<div className="bg-gray-900 tron-border rounded-none shadow-2xl p-6">
-			<h3 className="text-xl font-semibold mb-4 text-white">All Games ({gamelogs.length})</h3>
+		<div>
+			<h3 className="text-xl font-semibold mb-4 text-white">Gamelog ({gamelogs.length})</h3>
 			<div className="overflow-x-auto">
 				<table className="min-w-full table-auto">
 					<thead>
