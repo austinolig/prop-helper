@@ -81,9 +81,9 @@ export default async function Dashboard({
 		const stats = calculateStats(gamelogs);
 
 		return (
-			<div className="p-8 max-w-6xl mx-auto min-h-screen bg-black text-white">
+			<div className="py-8 px-4 max-w-6xl mx-auto min-h-screen bg-black text-white">
 				{/* Header */}
-				<div className="relative flex justify-between items-center mb-8">
+				<div className="relative flex flex-wrap justify-between items-center mb-8 gap-8">
 					<Link href="/">
 						<h1 className="text-3xl py-2 font-bold text-white">
 							Prop<span className="text-cyan-400">Helper</span>
