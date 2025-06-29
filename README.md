@@ -12,8 +12,8 @@ Designed to assist sports bettors analyze player props.
 
 - [ ] **Player Lookup**: Search for players.
   - [ ] Fuzzy search.
-- [ ] **Player Dashboard**: View player statistics.
-  - [ ] Display game logs.
+- [x] **Player Dashboard**: View player statistics.
+  - [x] Display game logs.
   - [ ] Display season high, low, averages.
   - [ ] Filter results (home/away, opponent, recent form, etc.).
 - [ ] **Prop Analysis**: View prop lines and odds.

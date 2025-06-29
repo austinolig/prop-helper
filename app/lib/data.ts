@@ -15,6 +15,18 @@ export async function fetchPlayers(): Promise<PlayersTable[]> {
 	}
 }
 
+export async function fetchPlayerById(playerId: number): Promise<PlayersTable | null> {
+	try {
+		console.log(`Fetching player ${playerId}...`);
+		const data = await sql<PlayersTable[]>`SELECT * FROM players WHERE id = ${playerId}`;
+		console.log('Player fetch completed.');
+		return data.length > 0 ? data[0] : null;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch player.');
+	}
+}
+
 export async function fetchGamelogsByPlayerId(playerId: number): Promise<GameLog[]> {
 	try {
 		console.log(`Fetching gamelogs for player ${playerId}...`);
