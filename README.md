@@ -10,8 +10,8 @@ Designed to assist sports bettors analyze player props.
 
 ## Planned Features
 
-- [ ] **Player Lookup**: Search for players.
-  - [ ] Fuzzy search.
+- [X] **Player Lookup**: Search for players.
+  - [X] Fuzzy search.
 - [x] **Player Dashboard**: View player statistics.
   - [x] Display game logs.
   - [x] Display season high, low, averages.
@@ -21,4 +21,5 @@ Designed to assist sports bettors analyze player props.
   - [x] Analyze props against player statistics.
 - [ ] **Prop Recommendations**: Recommend props based on analysis.
   - [ ] Provide insights on value bets.
+- [ ] **Slip Builder**: Add you favourite props to a slip.
 - [ ] **Extend to Other Sports**: Support more sports beyond basketball.
