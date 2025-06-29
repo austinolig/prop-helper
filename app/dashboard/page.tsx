@@ -25,6 +25,8 @@ function calculateStats(gamelogs: GameLog[]) {
 	const astValues = gamelogs.map(g => g.ast);
 	const stlValues = gamelogs.map(g => g.stl);
 	const blkValues = gamelogs.map(g => g.blk);
+	const fgPctValues = gamelogs.filter(g => g.fga > 0).map(g => (g.fgm / g.fga) * 100);
+	const fg3PctValues = gamelogs.filter(g => g.fg3a > 0).map(g => (g.fg3m / g.fg3a) * 100);
 
 	return {
 		avgPts: (totals.pts / totals.games).toFixed(1),
@@ -44,6 +46,10 @@ function calculateStats(gamelogs: GameLog[]) {
 		lowStl: Math.min(...stlValues),
 		highBlk: Math.max(...blkValues),
 		lowBlk: Math.min(...blkValues),
+		highFgPct: fgPctValues.length > 0 ? Math.max(...fgPctValues).toFixed(1) : '0.0',
+		lowFgPct: fgPctValues.length > 0 ? Math.min(...fgPctValues).toFixed(1) : '0.0',
+		highFg3Pct: fg3PctValues.length > 0 ? Math.max(...fg3PctValues).toFixed(1) : '0.0',
+		lowFg3Pct: fg3PctValues.length > 0 ? Math.min(...fg3PctValues).toFixed(1) : '0.0',
 		gamesPlayed: totals.games
 	};
 }
@@ -107,43 +113,45 @@ export default async function Dashboard({
 								<h3 className="text-lg font-semibold mb-3 text-white">Season Stats ({stats.gamesPlayed} games)</h3>
 								<div className="flex gap-6 flex-wrap">
 									<div className="text-center">
-										<div className="text-xl font-bold text-cyan-400">{stats.avgPts}</div>
 										<div className="text-xs text-gray-400">PPG</div>
+										<div className="text-xl font-bold text-cyan-400">{stats.avgPts}</div>
 										<div className="text-xs text-gray-500">H:{stats.highPts} / L:{stats.lowPts}</div>
 									</div>
 									<div className="text-center">
-										<div className="text-xl font-bold text-green-400">{stats.avgReb}</div>
 										<div className="text-xs text-gray-400">RPG</div>
+										<div className="text-xl font-bold text-green-400">{stats.avgReb}</div>
 										<div className="text-xs text-gray-500">H:{stats.highReb} / L:{stats.lowReb}</div>
 									</div>
 									<div className="text-center">
-										<div className="text-xl font-bold text-orange-400">{stats.avgAst}</div>
 										<div className="text-xs text-gray-400">APG</div>
+										<div className="text-xl font-bold text-orange-400">{stats.avgAst}</div>
 										<div className="text-xs text-gray-500">H:{stats.highAst} / L:{stats.lowAst}</div>
 									</div>
 									<div className="text-center">
-										<div className="text-xl font-bold text-purple-400">{stats.avgStl}</div>
 										<div className="text-xs text-gray-400">SPG</div>
+										<div className="text-xl font-bold text-purple-400">{stats.avgStl}</div>
 										<div className="text-xs text-gray-500">H:{stats.highStl} / L:{stats.lowStl}</div>
 									</div>
 									<div className="text-center">
-										<div className="text-xl font-bold text-pink-400">{stats.avgBlk}</div>
 										<div className="text-xs text-gray-400">BPG</div>
+										<div className="text-xl font-bold text-pink-400">{stats.avgBlk}</div>
 										<div className="text-xs text-gray-500">H:{stats.highBlk} / L:{stats.lowBlk}</div>
 									</div>
 									<div className="text-center">
-										<div className="text-xl font-bold text-yellow-400">{stats.fgPct}%</div>
 										<div className="text-xs text-gray-400">FG%</div>
+										<div className="text-xl font-bold text-yellow-400">{stats.fgPct}%</div>
+										<div className="text-xs text-gray-500">H:{stats.highFgPct}% / L:{stats.lowFgPct}%</div>
 									</div>
 									<div className="text-center">
-										<div className="text-xl font-bold text-blue-400">{stats.fg3Pct}%</div>
 										<div className="text-xs text-gray-400">3P%</div>
+										<div className="text-xl font-bold text-blue-400">{stats.fg3Pct}%</div>
+										<div className="text-xs text-gray-500">H:{stats.highFg3Pct}% / L:{stats.lowFg3Pct}%</div>
 									</div>
 								</div>
 							</div>
-						)}					</div>
+						)}
+					</div>
 				</div>
-
 				<GameStatChart gamelogs={gamelogs} />
 			</div>
 		);
