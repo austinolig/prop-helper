@@ -46,8 +46,12 @@ function calculateStats(gamelogs: GameLog[]) {
 	};
 }
 
-export default async function Dashboard() {
-	const playerId = 2544;
+interface DashboardProps {
+	searchParams: { playerId?: string };
+}
+
+export default async function Dashboard({ searchParams }: DashboardProps) {
+	const playerId = searchParams.playerId ? parseInt(searchParams.playerId, 10) : 2544;
 
 	try {
 		const [player, gamelogs] = await Promise.all([
