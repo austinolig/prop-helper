@@ -37,24 +37,35 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 	const [selectedStat, setSelectedStat] = useState<StatType>('pts');
 	const [threshold, setThreshold] = useState<number>(0);
 	const [gameRange, setGameRange] = useState<number | 'all'>('all');
+	const [homeAwayFilter, setHomeAwayFilter] = useState<'all' | 'home' | 'away'>('all');
 
 	useEffect(() => {
 		const initialThreshold = calculateInitialThreshold(gamelogs, selectedStat);
 		setThreshold(initialThreshold);
 	}, [gamelogs, selectedStat]);
 
-	const filteredGamelogs = gameRange === 'all'
+	const homeAwayFilteredLogs = homeAwayFilter === 'all' 
 		? gamelogs
-		: gamelogs.slice(0, gameRange);
+		: gamelogs.filter(game => {
+			if (homeAwayFilter === 'home') {
+				return game.matchup.includes(' vs. ');
+			} else {
+				return game.matchup.includes(' @ ');
+			}
+		});
 
-	const statValues = filteredGamelogs.map(game => game[selectedStat]);
+	const finalFilteredLogs = gameRange === 'all'
+		? homeAwayFilteredLogs
+		: homeAwayFilteredLogs.slice(0, gameRange);
+
+	const statValues = finalFilteredLogs.map(game => game[selectedStat]);
 	const maxValue = Math.max(...statValues);
 	const minValue = Math.min(...statValues);
 	const avgValue = statValues.length > 0 ? statValues.reduce((sum, val) => sum + val, 0) / statValues.length : 0;
 	const chartHeight = 200;
 	const chartWidth = 800;
-	const barWidth = chartWidth / filteredGamelogs.length * 0.8;
-	const barSpacing = chartWidth / filteredGamelogs.length;
+	const barWidth = chartWidth / finalFilteredLogs.length * 0.8;
+	const barSpacing = chartWidth / finalFilteredLogs.length;
 
 	const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
@@ -93,6 +104,19 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 							<option value={10}>Last 10</option>
 							<option value={20}>Last 20</option>
 							<option value="all">All</option>
+						</select>
+					</div>
+					<div className="flex items-center gap-2">
+						<label htmlFor="homeaway" className="text-sm text-gray-400">Location:</label>
+						<select
+							id="homeaway"
+							value={homeAwayFilter}
+							onChange={(e) => setHomeAwayFilter(e.target.value as 'all' | 'home' | 'away')}
+							className="bg-gray-800 text-white px-3 py-2 rounded-none border border-gray-600 focus:outline-none focus:ring-1 focus:ring-cyan-400 focus:border-cyan-400"
+						>
+							<option value="all">All</option>
+							<option value="home">Home</option>
+							<option value="away">Away</option>
 						</select>
 					</div>
 					<div className="flex items-center gap-2">
@@ -161,7 +185,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 					/>					)}
 
 					{/* Bars */}
-					{filteredGamelogs.map((game, index) => {
+					{finalFilteredLogs.map((game, index) => {
 						const value = game[selectedStat];
 						const barHeight = (value / maxValue) * chartHeight;
 						const x = index * barSpacing + (barSpacing - barWidth) / 2;
@@ -203,7 +227,8 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 			</div>
 
 		<div className="mt-4 text-sm text-gray-400">
-			Showing {statLabels[selectedStat]} for last {filteredGamelogs.length} games
+			Showing {statLabels[selectedStat]} for last {finalFilteredLogs.length} games
+			{homeAwayFilter !== 'all' && ` (${homeAwayFilter} only)`}
 			{' • '}
 			<span className="text-white">Avg: {avgValue.toFixed(1)}</span>
 			{' • '}
@@ -214,15 +239,15 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 				<>
 					{' • '}
 					<span className="text-green-400">
-						{filteredGamelogs.filter(game => game[selectedStat] > threshold).length} above
+						{finalFilteredLogs.filter(game => game[selectedStat] > threshold).length} above
 					</span>
 					{', '}
 					<span className="text-gray-300">
-						{filteredGamelogs.filter(game => game[selectedStat] === threshold).length} equal
+						{finalFilteredLogs.filter(game => game[selectedStat] === threshold).length} equal
 					</span>
 					{', '}
 					<span className="text-red-400">
-						{filteredGamelogs.filter(game => game[selectedStat] < threshold).length} below threshold
+						{finalFilteredLogs.filter(game => game[selectedStat] < threshold).length} below threshold
 					</span>
 				</>
 			)}
