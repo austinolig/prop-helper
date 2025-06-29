@@ -88,7 +88,7 @@ export default async function Dashboard({
 
 				{/* Player Info Section */}
 				<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
-					<div className="flex items-start gap-6">
+					<div className="flex items-start gap-x-12 gap-y-6 flex-wrap">
 						{/* Player Image and Info */}
 						<div className="flex items-start gap-4">
 							<div className="w-24 h-24 bg-gray-700 rounded-lg flex items-center justify-center">
@@ -103,9 +103,9 @@ export default async function Dashboard({
 
 						{/* Season Stats - Single Row */}
 						{stats && (
-							<div className="flex-1 ml-6">
+							<div className="flex-1">
 								<h3 className="text-lg font-semibold mb-3 text-white">Season Stats ({stats.gamesPlayed} games)</h3>
-								<div className="flex gap-6">
+								<div className="flex gap-6 flex-wrap">
 									<div className="text-center">
 										<div className="text-xl font-bold text-cyan-400">{stats.avgPts}</div>
 										<div className="text-xs text-gray-400">PPG</div>
