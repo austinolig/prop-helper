@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { GameLog } from '../types';
 import SortableTable from './SortableTable';
+import { Component } from './ExampleChart';
 
 interface GameStatChartProps {
 	gamelogs: GameLog[];
@@ -89,9 +90,9 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 	};
 
 	return (
-		<>
+		<div>
 			{/* Filters Section */}
-			<div className="bg-gray-900 tron-border rounded-t-lg shadow-2xl p-6">
+			<div className="bg-white/5 tron-border rounded-t-lg shadow-2xl p-6">
 				<div className="flex justify-between items-center flex-wrap gap-4">
 					<h3 className="text-xl font-semibold text-white">Filters</h3>
 					<div className="flex gap-4 items-center flex-wrap">
@@ -140,7 +141,7 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 			</div>
 
 			{/* Chart Section */}
-			<div className="bg-gray-900 tron-border-x shadow-2xl p-6">
+			<div className="bg-white/5 tron-border-x shadow-2xl p-6">
 				<div className="flex justify-between items-center mb-4 flex-wrap gap-4">
 					<h3 className="text-xl font-semibold text-white">Game Statistics Chart</h3>
 					<div className="flex items-center gap-2">
@@ -201,45 +202,28 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 						)}
 
 						{/* Bars */}
+						{/* <Component data={finalFilteredLogs} /> */}
 						{finalFilteredLogs.map((game, index) => {
 							const value = game[selectedStat];
-							const barHeight = (value / maxValue) * chartHeight;
-							const x = index * barSpacing + (barSpacing - barWidth) / 2;
-							const y = chartHeight - barHeight;
+							const x = index * (barWidth + barSpacing) + barSpacing / 2;
+							const y = chartHeight - (value / maxValue) * chartHeight;
+							const height = (value / maxValue) * chartHeight;
+
 
 							return (
-								<g key={game.gameId}>
-									<rect
-										x={x}
-										y={y}
-										width={barWidth}
-										height={barHeight}
-										fill={getBarColor(value)}
-										className="hover:opacity-80 transition-opacity"
-									/>
-									<text
-										x={x + barWidth / 2}
-										y={y - 3}
-										fill="rgb(229 231 235)"
-										fontSize="10"
-										textAnchor="middle"
-										className="pointer-events-none"
-									>
-										{value}
-									</text>
-									<text
-										x={x + barWidth / 2}
-										y={chartHeight + 15}
-										fill="rgb(156 163 175)"
-										fontSize="8"
-										textAnchor="middle"
-										className="pointer-events-none"
-									>
-										{index % 7 === 0 ? new Date(game.gameDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}
-									</text>
-								</g>
+								<rect
+									key={index}
+									x={x}
+									y={y}
+									width={barWidth}
+									height={height}
+									fill={getBarColor(value)}
+									className="tron-border"
+								/>
 							);
 						})}
+
+						{/* X-axis labels */}
 					</svg>
 				</div>
 
@@ -272,9 +256,9 @@ export default function GameStatChart({ gamelogs }: GameStatChartProps) {
 			</div>
 
 			{/* Gamelogs Section */}
-			<div className="bg-gray-900 tron-border rounded-b-lg shadow-2xl p-6">
+			<div className="bg-white/5 tron-border rounded-b-lg shadow-2xl p-6">
 				<SortableTable gamelogs={finalFilteredLogs} />
 			</div>
-		</>
+		</div>
 	);
 }
