@@ -112,7 +112,11 @@ export default function SortableTable({ gamelogs }: SortableTableProps) {
 						</tr>
 					</thead>
 					<tbody>
+<<<<<<< HEAD
 						{sortedGames.map((game) => (
+=======
+						{sortedGames.map((game, index) => (
+>>>>>>> 982c1304d6de838587897d7103d1153deb0b31ff
 							<tr key={game.gameId}>
 								<td className="p-2 text-gray-300">{game.gameDate}</td>
 								<td className="p-2 text-gray-300">{game.matchup}</td>
