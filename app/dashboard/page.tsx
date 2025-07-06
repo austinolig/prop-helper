@@ -1,8 +1,11 @@
-import { fetchPlayerById, fetchGamelogsByPlayerId, fetchPlayers } from '../lib/data';
+import {
+	fetchPlayerById,
+	fetchGamelogsByPlayerId,
+	fetchPlayers
+} from '../lib/data';
 import { GameLog } from '../types';
 import GameStatChart from '../components/GameStatChart';
-import PlayerSearchDropdown from '../components/PlayerSearchDropdown';
-import Link from 'next/link';
+import PlayerCombobox from '@/components/PlayerCombobox';
 
 function calculateStats(gamelogs: GameLog[]) {
 	if (gamelogs.length === 0) return null;
@@ -59,10 +62,11 @@ export default async function Dashboard({
 }: {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-	const { playerId } = await searchParams;
-	const parsedPlayerId = playerId ? parseInt(playerId as string, 10) : 2544;
+	const playerIdParam = (await searchParams).playerId;
+	const playerId = Array.isArray(playerIdParam) ? playerIdParam[0] : playerIdParam;
 
 	try {
+		const parsedPlayerId = playerId ? parseInt(playerId) : 2544;
 		const [player, gamelogs, allPlayers] = await Promise.all([
 			fetchPlayerById(parsedPlayerId),
 			fetchGamelogsByPlayerId(parsedPlayerId),
@@ -81,79 +85,76 @@ export default async function Dashboard({
 		const stats = calculateStats(gamelogs);
 
 		return (
-			<div className="py-8 px-4 max-w-6xl mx-auto min-h-screen bg-black text-white">
-				{/* Header */}
-				<div className="relative flex flex-wrap justify-between items-center mb-8 gap-8">
-					<Link href="/">
-						<h1 className="text-3xl py-2 font-bold text-white">
-							Prop<span className="text-cyan-400">Helper</span>
-						</h1>
-					</Link>
-					<PlayerSearchDropdown players={allPlayers} currentPlayerId={parsedPlayerId} />
-				</div>
-
-				{/* Player Info Section */}
-				<div className="bg-gray-900 tron-border rounded-lg shadow-2xl p-6 mb-8">
-					<div className="flex items-start gap-x-12 gap-y-6 flex-wrap">
-						{/* Player Image and Info */}
-						<div className="flex items-start gap-4">
-							<div className="w-24 h-24 bg-gray-700 rounded-lg flex items-center justify-center">
-								<span className="text-gray-400 text-xs">Player Image</span>
-							</div>
-							<div className="flex flex-col">
-								<h2 className="text-2xl font-semibold text-white">{player.full_name}</h2>
-								<div className="text-sm text-gray-400 mt-1">Player ID: <span className="text-white">{player.id}</span></div>
-								<div className="text-sm text-gray-400">Status: <span className={player.is_active ? 'text-green-400' : 'text-red-400'}>{player.is_active ? 'Active' : 'Inactive'}</span></div>
+			<main className='space-y-8'>
+				<div className="flex flex-wrap gap-8 bg-white/5 p-4 rounded-lg">
+					<div className='flex gap-4'>
+						<div className="w-24 h-24 bg-gray-700 rounded-full"></div>
+						<div className='ml-4'>
+							<PlayerCombobox
+								players={allPlayers}
+								currentPlayerId={playerId}
+							/>
+							<div className='mt-2'>
+								<p className='text-sm'>
+									<span className='text-gray-500'>Team:</span>{" "}
+									XX
+								</p>
+								<p className='text-sm'>
+									<span className='text-gray-500'>Position:</span>{" "}
+									XX
+								</p>
+								<p className='text-sm'>
+									<span className='text-gray-500'>Draft Year:</span>{" "}
+									XX
+								</p>
 							</div>
 						</div>
-
-						{/* Season Stats - Single Row */}
-						{stats && (
-							<div className="flex-1">
-								<h3 className="text-lg font-semibold mb-3 text-white">Season Stats ({stats.gamesPlayed} games)</h3>
-								<div className="flex gap-6 flex-wrap">
-									<div className="text-center">
-										<div className="text-xs text-gray-400">PPG</div>
-										<div className="text-xl font-bold text-cyan-400">{stats.avgPts}</div>
-										<div className="text-xs text-gray-500">H:{stats.highPts} / L:{stats.lowPts}</div>
-									</div>
-									<div className="text-center">
-										<div className="text-xs text-gray-400">RPG</div>
-										<div className="text-xl font-bold text-green-400">{stats.avgReb}</div>
-										<div className="text-xs text-gray-500">H:{stats.highReb} / L:{stats.lowReb}</div>
-									</div>
-									<div className="text-center">
-										<div className="text-xs text-gray-400">APG</div>
-										<div className="text-xl font-bold text-orange-400">{stats.avgAst}</div>
-										<div className="text-xs text-gray-500">H:{stats.highAst} / L:{stats.lowAst}</div>
-									</div>
-									<div className="text-center">
-										<div className="text-xs text-gray-400">SPG</div>
-										<div className="text-xl font-bold text-purple-400">{stats.avgStl}</div>
-										<div className="text-xs text-gray-500">H:{stats.highStl} / L:{stats.lowStl}</div>
-									</div>
-									<div className="text-center">
-										<div className="text-xs text-gray-400">BPG</div>
-										<div className="text-xl font-bold text-pink-400">{stats.avgBlk}</div>
-										<div className="text-xs text-gray-500">H:{stats.highBlk} / L:{stats.lowBlk}</div>
-									</div>
-									<div className="text-center">
-										<div className="text-xs text-gray-400">FG%</div>
-										<div className="text-xl font-bold text-yellow-400">{stats.fgPct}%</div>
-										<div className="text-xs text-gray-500">H:{stats.highFgPct}% / L:{stats.lowFgPct}%</div>
-									</div>
-									<div className="text-center">
-										<div className="text-xs text-gray-400">3P%</div>
-										<div className="text-xl font-bold text-blue-400">{stats.fg3Pct}%</div>
-										<div className="text-xs text-gray-500">H:{stats.highFg3Pct}% / L:{stats.lowFg3Pct}%</div>
-									</div>
+					</div>
+					{stats && (
+						<div className="flex-1 min-w-[250px]">
+							<h3 className="mb-3">Season Stats ({stats.gamesPlayed} games)</h3>
+							<div className="flex justify-around w-full gap-4 flex-wrap text-center text-xs text-gray-500">
+								<div>
+									<div>PPG</div>
+									<div className="text-xl font-medium text-cyan-500">{stats.avgPts}</div>
+									<div>H:{stats.highPts} / L:{stats.lowPts}</div>
+								</div>
+								<div>
+									<div>RPG</div>
+									<div className="text-xl font-medium text-green-500">{stats.avgReb}</div>
+									<div>H:{stats.highReb} / L:{stats.lowReb}</div>
+								</div>
+								<div>
+									<div>APG</div>
+									<div className="text-xl font-medium text-orange-500">{stats.avgAst}</div>
+									<div>H:{stats.highAst} / L:{stats.lowAst}</div>
+								</div>
+								<div>
+									<div>SPG</div>
+									<div className="text-xl font-medium text-purple-500">{stats.avgStl}</div>
+									<div>H:{stats.highStl} / L:{stats.lowStl}</div>
+								</div>
+								<div>
+									<div>BPG</div>
+									<div className="text-xl font-medium text-pink-500">{stats.avgBlk}</div>
+									<div>H:{stats.highBlk} / L:{stats.lowBlk}</div>
+								</div>
+								<div>
+									<div>FG%</div>
+									<div className="text-xl font-medium text-yellow-500">{stats.fgPct}%</div>
+									<div>H:{stats.highFgPct}% / L:{stats.lowFgPct}%</div>
+								</div>
+								<div>
+									<div>3P%</div>
+									<div className="text-xl font-medium text-blue-500">{stats.fg3Pct}%</div>
+									<div>H:{stats.highFg3Pct}% / L:{stats.lowFg3Pct}%</div>
 								</div>
 							</div>
-						)}
-					</div>
+						</div>
+					)}
 				</div>
 				<GameStatChart gamelogs={gamelogs} />
-			</div>
+			</main>
 		);
 	} catch (error) {
 		return (

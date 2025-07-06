@@ -23,3 +23,13 @@ Designed to assist sports bettors analyze player props.
   - [ ] Provide insights on value bets.
 - [ ] **Slip Builder**: Add you favourite props to a slip.
 - [ ] **Extend to Other Sports**: Support more sports beyond basketball.
+
+
+## Todos
+
+- [ ] **Backend**: Centralize data logic.
+  - [ ] Extract data, transform, and load (ETL) into db.
+  - [ ] Daily cron job to refresh data.
+  - [ ] Create API to query db for fetching on frontend.
+- [ ] **Frontend**: Improve user interface. 
+  - [ ] Use shadcn/ui for components.
