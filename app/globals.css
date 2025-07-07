@@ -111,12 +111,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply text-foreground;
 	background: linear-gradient(
 	  to bottom,
 	  var(--primary) -100%,
 	  var(--background) 20%
-	);
+	), var(--background);
+	background-repeat: no-repeat;
+  }
+
+  main {
+	  @apply space-y-8 max-w-[1200px] mx-auto;
   }
 }

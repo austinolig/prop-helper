@@ -20,12 +20,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`max-w-[1200px] mx-auto p-4 antialiased ${kanit.className}`}>
-				<Link href="/">
-					<h1 className="text-4xl font-bold text-white mb-4">
-						Prop<span className="text-primary">Helper</span>
-					</h1>
-				</Link>
+			<body className={`mx-4 antialiased ${kanit.className}`}>
+				<header className="max-w-[1200px] mx-auto my-8">
+					<Link href="/">
+						<h1 className="text-4xl font-bold">
+							Prop<span className="text-primary">Helper</span>
+						</h1>
+					</Link>
+				</header>
 				{children}
 			</body>
 		</html>
