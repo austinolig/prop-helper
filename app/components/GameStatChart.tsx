@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { GameLog } from '../types';
 import SortableTable from './SortableTable';
-import { Component } from './ExampleChart';
 
 interface GameStatChartProps {
 	gamelogs: GameLog[];
