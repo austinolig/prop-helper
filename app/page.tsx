@@ -6,9 +6,8 @@ export default function Home() {
 		<main className="text-center space-y-16 mt-16 md:mt-28">
 			<div className="space-y-8">
 				<h1 className="text-6xl md:text-7xl font-bold">
-					Beat the Books with{" "}
-					<span className="underline">Data-Driven</span>{" "}
-					Player Prop Analysis
+					<span className="underline">Beat the Books</span>{" "}
+					With Data-Driven Player Prop Analysis
 				</h1>
 				<p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
 					Compare player performances against sportsbook lines with advanced filters and analytics.
