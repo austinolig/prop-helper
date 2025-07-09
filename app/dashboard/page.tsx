@@ -7,6 +7,7 @@ import GameStatChart from '../components/GameStatChart';
 import PlayerSummary from '@/components/player-summary';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import PlayerGameLog from '@/components/player-gamelog';
 
 interface DashboardProps {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -41,6 +42,9 @@ export default async function Dashboard({
 				gamelogs={gamelogs}
 				allPlayers={allPlayers}
 				playerId={playerId}
+			/>
+			<PlayerGameLog
+				gamelogs={gamelogs}
 			/>
 			<GameStatChart
 				gamelogs={gamelogs}
