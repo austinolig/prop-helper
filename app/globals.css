@@ -80,7 +80,7 @@
   }
 
   body {
-    @apply bg-no-repeat text-foreground bg-background bg-linear-to-b/oklch from-primary/25 to-[50vh] to-background;
+    @apply min-h-[calc(100vh-4rem)] bg-no-repeat text-foreground bg-background bg-linear-to-b/oklch from-primary/25 to-[50vh] to-background;
   }
 
   main {

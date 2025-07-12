@@ -43,7 +43,7 @@ export const columns: ColumnDef<GameLog>[] = [
 		cell: ({ row }) => {
 			const wl = row.getValue("wl") as string
 			return (
-				<div className={`text-center ${wl === "W" ? "text-green-600" : "text-red-600"}`}>
+				<div className={`text-center ${wl === "W" ? "text-green-500" : "text-red-500"}`}>
 					{wl}
 				</div>
 			)
