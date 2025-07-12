@@ -61,8 +61,9 @@ export async function fetchGamelogsByPlayerId(playerId: number): Promise<GameLog
 				video_available as "videoAvailable"
 			FROM gamelogs 
 			WHERE player_id = ${playerId}
-			ORDER BY game_date DESC
+			ORDER BY TO_DATE(game_date, 'mon DD, yyyy')
 		`;
+		console.log(data);
 		console.log('Gamelogs fetch completed.');
 		return data;
 	} catch (error) {

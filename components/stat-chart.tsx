@@ -5,6 +5,7 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
+	Cell,
 	ReferenceLine,
 	XAxis,
 	YAxis
@@ -26,21 +27,14 @@ import {
 import { Button } from "./ui/button"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { GameLog } from "@/app/types"
+import { format } from "date-fns"
 
 export const description = "A bar chart"
 
-const chartData = [
-	{ month: "January", desktop: 186 },
-	{ month: "February", desktop: 305 },
-	{ month: "March", desktop: 237 },
-	{ month: "April", desktop: 73 },
-	{ month: "May", desktop: 209 },
-	{ month: "June", desktop: 214 },
-]
-
 const chartConfig = {
 	desktop: {
-		label: "Desktop",
+		label: "Value",
 		color: "var(--chart-1)",
 	},
 } satisfies ChartConfig
@@ -68,8 +62,18 @@ const statSelections = [
 	},
 ]
 
-export function StatChart() {
+const roundToNearestHalf = (value: number): number => {
+	return Math.round(value * 2) / 2;
+};
+
+export function StatChart({ data }: { data: GameLog[] }) {
 	const [selectedStat, setSelectedStat] = useState("pts");
+
+	const averageStat = roundToNearestHalf(data.reduce((acc, game) => {
+		const statValue = game[selectedStat as keyof GameLog] as number;
+		return acc + statValue;
+	}, 0) / data.length);
+
 	return (
 		<Card>
 			<CardHeader>
@@ -95,19 +99,19 @@ export function StatChart() {
 			</div>
 			<CardContent className="p-0">
 				<ChartContainer config={chartConfig} className="h-64 w-full">
-					<BarChart accessibilityLayer data={chartData}>
+					<BarChart accessibilityLayer data={data}>
 						<CartesianGrid vertical={false} />
 						<XAxis
-							dataKey="month"
+							dataKey="gameDate"
 							tickLine={false}
 							tickMargin={10}
 							axisLine={false}
-							tickFormatter={(value) => value.slice(0, 3)}
+							tickFormatter={(value) => format(value, "M/d")}
 						/>
 						<YAxis
 							yAxisId="left"
 							orientation="left"
-							dataKey="desktop"
+							dataKey={selectedStat}
 							tickLine={false}
 							tickMargin={10}
 							axisLine={false}
@@ -115,7 +119,7 @@ export function StatChart() {
 						<YAxis
 							yAxisId="right"
 							orientation="right"
-							dataKey="desktop"
+							dataKey={selectedStat}
 							tickLine={false}
 							tickMargin={10}
 							axisLine={false}
@@ -126,13 +130,33 @@ export function StatChart() {
 						/>
 						<Bar
 							yAxisId="left"
-							dataKey="desktop"
+							dataKey={selectedStat}
 							fill="var(--color-desktop)"
 							radius={8}
-						/>
+						>
+							{data.map((entry, index) => {
+								const statValue = entry[selectedStat as keyof GameLog] as number;
+
+								let fillColor = "";
+								if (statValue > averageStat) {
+									fillColor = "var(--color-green-500)";
+								} else if (statValue < averageStat) {
+									fillColor = "var(--color-red-500)";
+								} else {
+									fillColor = "var(--color-muted-foreground)";
+								}
+
+								return (
+									<Cell
+										key={`cell-${index}`}
+										fill={fillColor}
+									/>
+								)
+							})}
+						</Bar>
 						<ReferenceLine
 							yAxisId="left"
-							y={150}
+							y={averageStat}
 							stroke="grey"
 							strokeWidth={1}
 							strokeDasharray="10 10"
