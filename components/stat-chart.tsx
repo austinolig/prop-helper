@@ -80,7 +80,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 				<CardTitle>Stat Chart</CardTitle>
 				<CardDescription>Last 6 games</CardDescription>
 			</CardHeader>
-			<div className="flex items-center justify-between gap-4 p-6 border-y border-secondary overflow-x-auto">
+			<div className="flex items-center justify-between gap-3 pb-3 px-3 border-b border-secondary overflow-x-auto">
 				{statSelections.map((stat) => (
 					<Button
 						key={stat.value}
@@ -164,8 +164,8 @@ export function StatChart({ data }: { data: GameLog[] }) {
 					</BarChart>
 				</ChartContainer>
 			</CardContent>
-			<CardFooter className="flex-col items-start gap-2 text-sm border-t border-secondary">
-				<div className="flex gap-2 leading-none font-medium">
+			<CardFooter className="text-sm border-t border-secondary">
+				<div className="flex gap-1.5 leading-none font-medium">
 					Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
 				</div>
 				<div className="text-muted-foreground leading-none">

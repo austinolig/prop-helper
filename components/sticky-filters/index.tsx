@@ -16,9 +16,9 @@ import { useState } from "react";
 export function StickyFilters() {
 	const [sticky, setSticky] = useState(false);
 	return (
-		<section className={sticky ? "sticky top-4 z-10" : ""}>
+		<section className={sticky ? "sticky top-3 z-10" : ""}>
 			<Card className="w-full relative">
-				<CardHeader className="pb-6 border-b border-secondary">
+				<CardHeader className="">
 					<CardTitle>Filters</CardTitle>
 					<CardDescription>0 filters selected</CardDescription>
 					<Button
@@ -26,7 +26,7 @@ export function StickyFilters() {
 						variant="ghost"
 						size="icon"
 						className={cn(
-							"absolute top-4 right-4 text-muted-foreground hover:text-foreground",
+							"absolute top-1 right-1 rounded-lg text-muted-foreground hover:text-foreground",
 							sticky ? "text-primary hover:text-primary" : ""
 						)}
 					>
@@ -34,7 +34,7 @@ export function StickyFilters() {
 						{sticky ? <Pin /> : <PinOff />}
 					</Button>
 				</CardHeader>
-				<CardContent className="flex gap-4 justify-between overflow-x-auto">
+				<CardContent className="relative flex gap-3 justify-between overflow-x-auto">
 					<FilterCombobox />
 					<FilterCombobox />
 					<FilterCombobox />

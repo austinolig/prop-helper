@@ -47,12 +47,12 @@ export function GamelogTable<TData, TValue>({
 	})
 
 	return (
-		<Card className="rounded-md border">
+		<Card>
 			<CardHeader className="pb-6 border-b border-secondary">
 				<CardTitle>Gamelog</CardTitle>
 				<CardDescription>Showing 70 games</CardDescription>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="p-0 sm:px-3">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (

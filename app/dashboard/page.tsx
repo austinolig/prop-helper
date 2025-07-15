@@ -51,15 +51,15 @@ export default async function Dashboard({
 		<main>
 			<StickyFilters />
 			<section className="flex justify-between items-center gap-4 overflow-x-auto">
-				<Card className="w-full">
-					<CardHeader className="pb-6 border-b border-secondary flex items-center gap-4">
-						<div className="w-[50px] h-[50px] rounded-full bg-secondary shrink-0"></div>
-						<div className="flex flex-col gap-1.5">
+				<Card className="w-full py-3">
+					<CardHeader className="border-b sm:px-3 border-secondary flex items-center gap-4">
+						<div className="w-[30px] h-[30px] rounded-full bg-secondary shrink-0"></div>
+						<div className="flex items-center gap-2">
 							<CardTitle>{player?.full_name}</CardTitle>
 							<CardDescription>Los Angeles Lakers</CardDescription>
 						</div>
 					</CardHeader>
-					<CardContent className="grid grid-flow-col auto-cols-[1fr] gap-6 justify-between overflow-x-auto">
+					<CardContent className="grid grid-flow-col auto-cols-[1fr] gap-3 justify-between overflow-x-auto">
 						<div className="min-w-max">
 							<p className="font-medium">25 <span className="text-sm">POINTS</span></p>
 							<p className="text-sm text-muted-foreground">H: 37/L: 10</p>
@@ -84,7 +84,7 @@ export default async function Dashboard({
 				</Card>
 			</section>
 			<section>
-				<StatChart data={gamelogs} />
+				<StatChart data={gamelogs.slice(0, 10)} />
 			</section>
 			<section>
 				<GamelogTable columns={columns} data={gamelogs} />
