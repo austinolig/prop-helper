@@ -1,5 +1,6 @@
 import postgres from 'postgres';
 import { GameLog, PlayersTable } from '../types';
+import { buildGameLog } from '../seed/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -21,7 +22,7 @@ export async function fetchPlayerById(playerId: number): Promise<PlayersTable | 
 		const data = await sql<PlayersTable[]>`SELECT * FROM players WHERE id = ${playerId}`;
 
 		if (data.length === 0) {
-			const response = await fetch(`http://localhost:8000/api/player/${playerId}`);
+			const response = await fetch(`http://localhost:8000/api/wnba/players/${playerId}/info`);
 			const data = await response.json();
 			console.log('Backup player fetch completed.', data);
 			return data;
@@ -73,10 +74,11 @@ export async function fetchGamelogsByPlayerId(playerId: number): Promise<GameLog
 		`;
 
 		if (data.length === 0) {
-			const response = await fetch(`http://localhost:8000/api/player/gamelog/${playerId}`);
+			const response = await fetch(`http://localhost:8000/api/wnba/players/${playerId}/gamelog`);
 			const data = await response.json();
-			console.log('Backup gamelogs fetch completed.', data);
-			return data;
+			const formattedData = buildGameLog(data.data_sets[0].data.data);
+			console.log('Backup gamelogs fetch completed.', formattedData);
+			return formattedData;
 		}
 
 		console.log(data);

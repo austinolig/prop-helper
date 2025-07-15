@@ -11,7 +11,7 @@ interface GameLogObject {
 	[key: string]: string | number;
 }
 
-function buildGameLog(data: GameLogData[]) {
+export function buildGameLog(data: GameLogData[]) {
 	const headers = [
 		"seasonId",
 		"playerId",
