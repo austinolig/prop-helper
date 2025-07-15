@@ -83,12 +83,12 @@ export default async function Dashboard({
 					</CardContent>
 				</Card>
 			</section>
-			<section>
-				<StatChart data={gamelogs.slice(0, 10)} />
-			</section>
-			<section>
-				<GamelogTable columns={columns} data={gamelogs} />
-			</section>
+			{/* <section> */}
+			{/* 	<StatChart data={gamelogs.slice(0, 10)} /> */}
+			{/* </section> */}
+			{/* <section> */}
+			{/* 	<GamelogTable columns={columns} data={gamelogs} /> */}
+			{/* </section> */}
 		</main>
 	);
 }

@@ -19,6 +19,14 @@ export async function fetchPlayerById(playerId: number): Promise<PlayersTable | 
 	try {
 		console.log(`Fetching player ${playerId}...`);
 		const data = await sql<PlayersTable[]>`SELECT * FROM players WHERE id = ${playerId}`;
+
+		if (data.length === 0) {
+			const response = await fetch(`http://localhost:8000/api/player/${playerId}`);
+			const data = await response.json();
+			console.log('Backup player fetch completed.', data);
+			return data;
+		}
+
 		console.log('Player fetch completed.');
 		return data.length > 0 ? data[0] : null;
 	} catch (error) {
@@ -63,6 +71,14 @@ export async function fetchGamelogsByPlayerId(playerId: number): Promise<GameLog
 			WHERE player_id = ${playerId}
 			ORDER BY TO_DATE(game_date, 'mon DD, yyyy')
 		`;
+
+		if (data.length === 0) {
+			const response = await fetch(`http://localhost:8000/api/player/gamelog/${playerId}`);
+			const data = await response.json();
+			console.log('Backup gamelogs fetch completed.', data);
+			return data;
+		}
+
 		console.log(data);
 		console.log('Gamelogs fetch completed.');
 		return data;
