@@ -80,10 +80,10 @@
   }
 
   body {
-    @apply min-h-[calc(100vh-4rem)] bg-no-repeat text-foreground bg-background bg-linear-to-b/oklch from-primary/25 to-[50vh] to-background;
+    @apply min-h-dvh max-w-6xl mx-auto sm:px-3 pt-6 pb-3 bg-no-repeat text-foreground bg-background bg-linear-to-b/oklch from-primary/25 to-[50vh] to-background;
   }
 
   main {
-	  @apply space-y-4 max-w-[1200px] mx-auto;
+	  @apply space-y-3;
   }
 }

@@ -15,9 +15,9 @@ export default function PlayerCard({ player }: PlayerCardProps) {
 	return (
 		<section>
 			<Card className="w-full py-3">
-				<CardHeader className="border-b sm:px-3 border-secondary flex items-center gap-4">
-					<div className="w-[30px] h-[30px] rounded-full bg-secondary shrink-0"></div>
-					<div className="flex items-center gap-2">
+				<CardHeader className="border-b sm:px-3 border-secondary flex items-center gap-3">
+					<div className="size-8 rounded-full bg-secondary shrink-0"></div>
+					<div className="flex items-center gap-3">
 						<CardTitle>{player?.full_name}</CardTitle>
 						<CardDescription>Los Angeles Lakers</CardDescription>
 					</div>

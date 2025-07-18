@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
 export default function Home() {
@@ -22,9 +22,16 @@ export default function Home() {
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				<Card>
+					<CardHeader className="flex-col items-start">
+						<CardTitle className="flex gap-3">
+							📊
+							<span>Performance Analytics</span>
+						</CardTitle>
+						<CardDescription>
+							Analyze player performance against prop lines with detailed stats and trends
+						</CardDescription>
+					</CardHeader>
 					<CardContent>
-						<div className="text-4xl mb-4">📊</div>
-						<h2 className="text-xl font-semibold text-white mb-2">Performance Analytics</h2>
 						<p className="text-gray-400">Deep dive into player stats and historical performance against prop lines</p>
 					</CardContent>
 				</Card>
