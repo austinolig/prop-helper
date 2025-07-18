@@ -43,8 +43,8 @@ export default async function Dashboard({
 
 	return (
 		<main>
-			<StickyFilters />
 			<PlayerCard player={player} />
+			<StickyFilters />
 			<StatChart data={gamelogs} />
 			<GamelogTable columns={columns} data={gamelogs} />
 		</main>

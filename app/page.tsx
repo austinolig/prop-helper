@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartColumn, ChartNoAxesCombined, Diamond, Gem, SlidersHorizontal } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartNoAxesCombined, Gem, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {

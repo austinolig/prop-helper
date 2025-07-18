@@ -81,7 +81,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 					<CardTitle>Stat Chart</CardTitle>
 					<CardDescription>Last 6 games</CardDescription>
 				</CardHeader>
-				<div className="flex items-center justify-between gap-3 pb-3 px-3 border-b border-secondary overflow-x-auto">
+				<div className="flex items-center justify-between gap-3 pb-3 px-3 overflow-x-auto">
 					{statSelections.map((stat) => (
 						<Button
 							key={stat.value}

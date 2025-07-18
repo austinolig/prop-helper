@@ -7,7 +7,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { FilterCombobox } from "@/components/filter-combobox";
+import { FilterCombobox } from "./filter-combobox";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Pin, PinOff } from "lucide-react";
