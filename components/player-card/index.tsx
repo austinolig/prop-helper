@@ -5,7 +5,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { PlayersTable } from "@/app/types";
+import { PlayersTable } from "@/types";
 
 interface PlayerCardProps {
 	player: PlayersTable;

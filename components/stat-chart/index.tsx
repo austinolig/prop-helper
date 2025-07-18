@@ -24,10 +24,10 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart"
-import { Button } from "./ui/button"
+import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { GameLog } from "@/app/types"
+import { GameLog } from "@/types"
 import { format } from "date-fns"
 
 export const description = "A bar chart"

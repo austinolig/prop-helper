@@ -2,7 +2,7 @@ import { Kanit } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
-import { SearchCombobox } from "@/search-combobox";
+import { SearchCombobox } from "@/components/search-combobox";
 import { Suspense } from "react";
 import { LoaderCircle } from "lucide-react";
 

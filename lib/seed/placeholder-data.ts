@@ -1,4 +1,4 @@
-import { GameLog, GameLogData } from "../types";
+import { GameLog, GameLogData } from "@/types";
 import { nikolaJokicData } from "./jokic-data";
 import { lebronJamesData } from "./lebron-data";
 import { stephenCurryData } from "./curry-data";

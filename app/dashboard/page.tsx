@@ -6,7 +6,7 @@ import {
 	fetchGamelogsByPlayerId,
 	fetchPlayerById,
 	// fetchPlayers
-} from "../lib/data";
+} from "@/lib/data";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import PlayerCard from "@/components/player-card";

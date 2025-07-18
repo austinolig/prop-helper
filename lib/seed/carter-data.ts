@@ -1,4 +1,4 @@
-import { GameLogData } from "../types";
+import { GameLogData } from "@/types";
 
 export const vinceCarterData: GameLogData[] = [
 	[

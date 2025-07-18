@@ -1,6 +1,6 @@
 import postgres from 'postgres';
-import { GameLog, PlayersTable } from '../types';
-import { buildGameLog } from '../seed/placeholder-data';
+import { GameLog, PlayersTable } from '@/types';
+import { buildGameLog } from './seed/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 

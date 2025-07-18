@@ -1,6 +1,6 @@
 import postgres from "postgres";
 import { players, gamelogs } from "./placeholder-data";
-import { GameLog, PlayersTable } from "../types";
+import { GameLog, PlayersTable } from "@/types";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 

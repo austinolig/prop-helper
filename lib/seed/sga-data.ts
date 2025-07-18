@@ -1,4 +1,4 @@
-import { GameLogData } from "../types";
+import { GameLogData } from "@/types";
 
 export const shaiGilgeousAlexanderData: GameLogData[] = [
 	["22024", 1628983, "0022401153", "Apr 08, 2025", "OKC vs. LAL", "W", 37, 14, 26, 0.538, 5, 9, 0.556, 9, 11, 0.818, 1, 5, 6, 6, 0, 1, 1, 5, 42, 7, 1],
