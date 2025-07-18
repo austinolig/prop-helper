@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartColumn, ChartNoAxesCombined, Diamond, Gem, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
 	return (
 		<main className="text-center space-y-16 mt-16 md:mt-28">
-			<div className="space-y-8">
+			<div className="space-y-6 px-3">
 				<h1 className="text-5xl md:text-6xl font-bold text-shadow-lg">
-					<span className="underline md:block">Beat the Books</span>{" "}
-					With Player Prop Analysis
+					<span className="md:block">Beat the Books</span>{" "}
+					With Prop Analysis
 				</h1>
 				<p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
 					Compare player performances against sportsbook lines with advanced filters and analytics.
@@ -20,33 +21,44 @@ export default function Home() {
 					</Link>
 				</Button>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 				<Card>
-					<CardHeader className="flex-col items-start">
-						<CardTitle className="flex gap-3">
-							📊
-							<span>Performance Analytics</span>
-						</CardTitle>
-						<CardDescription>
-							Analyze player performance against prop lines with detailed stats and trends
-						</CardDescription>
+					<CardHeader>
+						<ChartNoAxesCombined className="shrink-0 text-muted-foreground" />
+						<div className="text-left flex flex-col gap-1.5">
+							<CardTitle>
+								Performance Analytics
+							</CardTitle>
+						</div>
 					</CardHeader>
-					<CardContent>
-						<p className="text-gray-400">Deep dive into player stats and historical performance against prop lines</p>
+					<CardContent className="text-left text-muted-foreground">
+						Analyze player performance against prop lines with detailed stats and trends
 					</CardContent>
 				</Card>
 				<Card>
-					<CardContent>
-						<div className="text-4xl mb-4">🔍</div>
-						<h2 className="text-xl font-semibold text-white mb-2">Advanced Filters</h2>
-						<p className="text-gray-400">Filter by matchups, recent form, home/away splits, and more</p>
+					<CardHeader>
+						<SlidersHorizontal className="shrink-0 text-muted-foreground" />
+						<div className="text-left flex flex-col gap-1.5">
+							<CardTitle>
+								Advanced Filters
+							</CardTitle>
+						</div>
+					</CardHeader>
+					<CardContent className="text-left text-muted-foreground">
+						Filter by player, team, game, and more to find the best prop bets
 					</CardContent>
 				</Card>
 				<Card>
-					<CardContent>
-						<div className="text-4xl mb-4">💎</div>
-						<h2 className="text-xl font-semibold text-white mb-2">Find Value</h2>
-						<p className="text-gray-400">Identify mispriced props and betting opportunities with confidence</p>
+					<CardHeader>
+						<Gem className="shrink-0 text-muted-foreground" />
+						<div className="text-left flex flex-col gap-1.5">
+							<CardTitle>
+								Value Insights
+							</CardTitle>
+						</div>
+					</CardHeader>
+					<CardContent className="text-left text-muted-foreground">
+						Spot trends and identify value bets with comprehensive analytics
 					</CardContent>
 				</Card>
 			</div>
