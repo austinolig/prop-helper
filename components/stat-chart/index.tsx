@@ -6,6 +6,7 @@ import {
 	BarChart,
 	CartesianGrid,
 	Cell,
+	LabelList,
 	ReferenceLine,
 	XAxis,
 	YAxis
@@ -29,6 +30,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { GameLog } from "@/types"
 import { format } from "date-fns"
+import { Slider } from "../ui/slider"
 
 export const description = "A bar chart"
 
@@ -73,6 +75,12 @@ export function StatChart({ data }: { data: GameLog[] }) {
 		const statValue = game[selectedStat as keyof GameLog] as number;
 		return acc + statValue;
 	}, 0) / data.length);
+	const maxStat = Math.max(...data.map(game => game[selectedStat as keyof GameLog] as number));
+
+	const [sliderValue, setSliderValue] = useState(averageStat);
+	const handleSlider = (value: number[]) => {
+		setSliderValue(value[0]);
+	};
 
 	return (
 		<section>
@@ -81,14 +89,12 @@ export function StatChart({ data }: { data: GameLog[] }) {
 					<CardTitle>Stat Chart</CardTitle>
 					<CardDescription>Last {data.length} games</CardDescription>
 				</CardHeader>
-				<div className="flex items-center justify-between gap-3 pb-3 px-3 overflow-x-auto">
+				<div className="flex items-center justify-between gap-3 px-3 overflow-x-auto">
 					{statSelections.map((stat) => (
 						<Button
 							key={stat.value}
 							variant="ghost"
 							className={cn(
-								// selectedStat === stat.value ? "bg-accent text-primary" : "",
-								// "hover:text-primary flex-1",
 								"flex-1 border-b-4 border-muted-foreground rounded-none rounded-t-md text-muted-foreground hover:text-foreground hover:border-foreground",
 								selectedStat === stat.value ? "border-primary text-primary hover:text-primary hover:border-primary" : "",
 							)}
@@ -98,9 +104,13 @@ export function StatChart({ data }: { data: GameLog[] }) {
 						</Button>
 					))}
 				</div>
-				<CardContent className="p-0">
+				<CardContent className="p-0 pr-3">
 					<ChartContainer config={chartConfig} className="h-64 w-full">
-						<BarChart accessibilityLayer data={data.toReversed()}>
+						<BarChart
+							accessibilityLayer
+							data={data}
+							margin={{ top: 8, right: 0 }}
+						>
 							<CartesianGrid vertical={false} />
 							<XAxis
 								dataKey="gameDate"
@@ -110,27 +120,18 @@ export function StatChart({ data }: { data: GameLog[] }) {
 								tickFormatter={(value) => format(value, "M/d")}
 							/>
 							<YAxis
-								yAxisId="left"
 								orientation="left"
 								dataKey={selectedStat}
 								tickLine={false}
-								tickMargin={10}
+								tickMargin={0}
 								axisLine={false}
-							/>
-							<YAxis
-								yAxisId="right"
-								orientation="right"
-								dataKey={selectedStat}
-								tickLine={false}
-								tickMargin={10}
-								axisLine={false}
+								width={32}
 							/>
 							<ChartTooltip
 								cursor={false}
 								content={<ChartTooltipContent hideLabel />}
 							/>
 							<Bar
-								yAxisId="left"
 								dataKey={selectedStat}
 								fill="var(--color-desktop)"
 								radius={8}
@@ -139,9 +140,9 @@ export function StatChart({ data }: { data: GameLog[] }) {
 									const statValue = entry[selectedStat as keyof GameLog] as number;
 
 									let fillColor = "";
-									if (statValue > averageStat) {
+									if (statValue > sliderValue) {
 										fillColor = "var(--color-green-500)";
-									} else if (statValue < averageStat) {
+									} else if (statValue < sliderValue) {
 										fillColor = "var(--color-red-500)";
 									} else {
 										fillColor = "var(--color-muted-foreground)";
@@ -154,17 +155,41 @@ export function StatChart({ data }: { data: GameLog[] }) {
 										/>
 									)
 								})}
+								<LabelList
+									position="insideTop"
+									offset={8}
+									fill="var(--background)"
+									fontWeight="bold"
+									fontSize={14}
+									opacity={0.7}
+								/>
 							</Bar>
 							<ReferenceLine
-								yAxisId="left"
-								y={averageStat}
+								y={sliderValue}
 								stroke="grey"
 								strokeWidth={1}
 								strokeDasharray="10 10"
+								label={{
+									value: sliderValue,
+									position: "insideRight",
+									fill: "var(--color-foreground)",
+									fontSize: 14,
+									fontWeight: "bold",
+								}}
 							/>
 						</BarChart>
 					</ChartContainer>
 				</CardContent>
+				<div className="px-3">
+					<Slider
+						value={[sliderValue]}
+						onValueChange={handleSlider}
+						max={maxStat}
+						min={0}
+						step={0.5}
+
+					/>
+				</div>
 				<CardFooter className="text-sm border-t border-secondary">
 					<div className="flex gap-1.5 leading-none font-medium">
 						Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />

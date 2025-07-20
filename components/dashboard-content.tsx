@@ -63,7 +63,7 @@ export function DashboardContent({ gamelogs }: DashboardContentProps) {
 				range={range}
 				onRangeChange={setRange}
 			/>
-			<StatChart data={filteredAndRangedGamelogs} />
+			<StatChart data={filteredAndRangedGamelogs.toReversed()} />
 			<GamelogTable columns={columns} data={filteredAndRangedGamelogs} />
 		</>
 	);
