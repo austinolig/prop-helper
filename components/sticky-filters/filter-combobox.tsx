@@ -27,16 +27,16 @@ interface FilterComboboxProps {
 	filterType?: string
 }
 
-export function FilterCombobox({ 
-	options, 
-	placeholder = "Select filter...", 
+export function FilterCombobox({
+	options,
+	placeholder = "Select filter...",
 	onValueChange,
 	value: controlledValue,
 	filterType = "option"
 }: FilterComboboxProps) {
 	const [open, setOpen] = React.useState(false)
 	const [internalValue, setInternalValue] = React.useState("")
-	
+
 	const value = controlledValue !== undefined ? controlledValue : internalValue
 	const setValue = controlledValue !== undefined ? onValueChange : setInternalValue
 
@@ -47,7 +47,7 @@ export function FilterCombobox({
 					variant="outline"
 					role="combobox"
 					aria-expanded={open}
-					className="w-[200px] justify-between"
+					className="w-full justify-between"
 				>
 					{value
 						? options.find((option) => option.value === value)?.label
@@ -55,7 +55,7 @@ export function FilterCombobox({
 					<ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-[200px] p-0">
+			<PopoverContent className="w-full p-0">
 				<Command>
 					<CommandInput placeholder={`Search ${filterType}...`} />
 					<CommandList>

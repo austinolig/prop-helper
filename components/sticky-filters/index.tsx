@@ -7,10 +7,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
-import { FilterCombobox } from "./filter-combobox";
+import { FilterDropdown } from "./filter-dropdown";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Pin, PinOff } from "lucide-react";
+import { Filter, Pin, PinOff } from "lucide-react";
 import { useState } from "react";
 import { FilterState } from "@/types";
 import { FILTER_OPTIONS, DEFAULT_FILTERS, DEFAULT_RANGE } from "@/lib/filter-constants";
@@ -19,6 +19,15 @@ import {
 	TabsList,
 	TabsTrigger
 } from "@/components/ui/tabs"
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from "@/components/ui/drawer"
 
 interface StickyFiltersProps {
 	filters?: FilterState;
@@ -71,8 +80,8 @@ export function StickyFilters({
 						{sticky ? <Pin /> : <PinOff />}
 					</Button>
 				</CardHeader>
-				<CardContent className="space-y-4">
-					<Tabs value={range} onValueChange={setRange} className="w-full">
+				<CardContent className="flex gap-3">
+					<Tabs value={range} onValueChange={setRange} className="flex-1">
 						<TabsList className="w-full">
 							<TabsTrigger value="all">All</TabsTrigger>
 							<TabsTrigger value="5">L5</TabsTrigger>
@@ -80,43 +89,39 @@ export function StickyFilters({
 							<TabsTrigger value="20">L20</TabsTrigger>
 						</TabsList>
 					</Tabs>
-					<div className="flex gap-3 justify-between overflow-x-auto">
-						<FilterCombobox
-							options={FILTER_OPTIONS.matchup}
-							placeholder="Home/Away"
-							value={filters.matchup}
-							onValueChange={(value) => handleFilterChange("matchup", value)}
-							filterType="matchup"
-						/>
-						<FilterCombobox
-							options={FILTER_OPTIONS.wl}
-							placeholder="Win/Loss"
-							value={filters.wl}
-							onValueChange={(value) => handleFilterChange("wl", value)}
-							filterType="result"
-						/>
-						<FilterCombobox
-							options={FILTER_OPTIONS.season}
-							placeholder="Season"
-							value={filters.season}
-							onValueChange={(value) => handleFilterChange("season", value)}
-							filterType="season"
-						/>
-						<FilterCombobox
-							options={FILTER_OPTIONS.month}
-							placeholder="Month"
-							value={filters.month}
-							onValueChange={(value) => handleFilterChange("month", value)}
-							filterType="month"
-						/>
-						<FilterCombobox
-							options={FILTER_OPTIONS.year}
-							placeholder="Year"
-							value={filters.year}
-							onValueChange={(value) => handleFilterChange("year", value)}
-							filterType="year"
-						/>
-					</div>
+					<Drawer>
+						<DrawerTrigger asChild>
+							<Button variant="outline">
+								<Filter />
+								<span>Filters</span>
+							</Button>
+						</DrawerTrigger>
+						<DrawerContent>
+							<DrawerHeader>
+								<DrawerTitle>Filters</DrawerTitle>
+							</DrawerHeader>
+							<div className="flex gap-3 flex-wrap px-3">
+								<FilterDropdown
+									options={FILTER_OPTIONS.matchup}
+									placeholder="Home/Away"
+									value={filters.matchup}
+									onValueChange={(value) => handleFilterChange("matchup", value)}
+								/>
+								<FilterDropdown
+									options={FILTER_OPTIONS.wl}
+									placeholder="Win/Loss"
+									value={filters.wl}
+									onValueChange={(value) => handleFilterChange("wl", value)}
+								/>
+							</div>
+							<DrawerFooter>
+								<Button>Save</Button>
+								<DrawerClose asChild>
+									<Button variant="outline">Cancel</Button>
+								</DrawerClose>
+							</DrawerFooter>
+						</DrawerContent>
+					</Drawer>
 				</CardContent>
 			</Card>
 		</section>
