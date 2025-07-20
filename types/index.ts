@@ -65,3 +65,12 @@ export interface PlayersTable {
 	last_name: string;
 	is_active: boolean;
 }
+
+export interface FilterState {
+	[key: string]: string;
+}
+
+export interface FilterOption {
+	value: string;
+	label: string;
+}
