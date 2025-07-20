@@ -24,7 +24,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`antialiased ${kanit.className}`}>
-				<header className="max-w-[1200px] mx-auto px-3 sm:px-0 mb-6 flex items-center justify-between">
+				<header className="px-3 py-6 flex items-center justify-between">
 					<Link href="/" className="relative">
 						<p className="text-4xl absolute -z-1 top-0 left-0 font-bold text-shadow-lg text-transparent">
 							PropHelper

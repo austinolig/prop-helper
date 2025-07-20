@@ -39,7 +39,7 @@ export default async function Dashboard({
 	}
 
 	return (
-		<main>
+		<main className="space-y-3">
 			<PlayerCard player={player} />
 			<DashboardContent gamelogs={gamelogs} />
 		</main>
