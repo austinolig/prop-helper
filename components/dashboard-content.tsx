@@ -3,7 +3,7 @@
 import { GamelogTable } from "@/components/gamelog-table";
 import { columns } from "@/components/gamelog-table/columns";
 import { StatChart } from "@/components/stat-chart";
-import { StickyFilters } from "@/components/sticky-filters";
+import { Filters } from "@/components/filters";
 import { GameLog, FilterState } from "@/types";
 import { DEFAULT_FILTERS, DEFAULT_RANGE } from "@/lib/filter-constants";
 import { useState, useMemo } from "react";
@@ -57,7 +57,7 @@ export function DashboardContent({ gamelogs }: DashboardContentProps) {
 
 	return (
 		<>
-			<StickyFilters
+			<Filters
 				filters={filters}
 				onFiltersChange={setFilters}
 				range={range}

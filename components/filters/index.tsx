@@ -30,20 +30,19 @@ import {
 } from "@/components/ui/drawer"
 import { Badge } from "../ui/badge";
 
-interface StickyFiltersProps {
+interface FiltersProps {
 	filters?: FilterState;
 	onFiltersChange?: (filters: FilterState) => void;
 	range?: string;
 	onRangeChange?: (range: string) => void;
 }
 
-export function StickyFilters({
+export function Filters({
 	filters: externalFilters,
 	onFiltersChange,
 	range: externalRange,
 	onRangeChange
-}: StickyFiltersProps) {
-	const [sticky, setSticky] = useState(false);
+}: FiltersProps) {
 	const [internalFilters, setInternalFilters] = useState<FilterState>(DEFAULT_FILTERS);
 	const [internalRange, setInternalRange] = useState(DEFAULT_RANGE);
 
@@ -60,36 +59,31 @@ export function StickyFilters({
 		setFilters(newFilters);
 	};
 
-	const activeFiltersCount = Object.values(filters).filter(value => value !== "").length;
-	const activeFilters = Object.values(filters).filter(value => value !== "");
+	const getFilterLabel = (filterType: string, value: string): string => {
+		const options = FILTER_OPTIONS[filterType as keyof typeof FILTER_OPTIONS];
+		const option = options?.find(opt => opt.value === value);
+		return option?.label || value;
+	};
+
+	const activeFilters = Object.entries(filters)
+		.filter(([_, value]) => value !== "")
+		.map(([key, value]) => getFilterLabel(key, value));
 
 	return (
-		<section className={sticky ? "sticky top-3 z-10" : ""}>
+		<section>
 			<Card className="w-full relative">
 				<CardHeader>
 					<CardTitle>Filters</CardTitle>
 					<CardDescription>
-						{activeFiltersCount} filter{activeFiltersCount !== 1 ? 's' : ''} selected
+						{activeFilters.length} filter{activeFilters.length !== 1 ? "s" : ""} selected
 					</CardDescription>
-					{activeFiltersCount > 0 && (
+					{activeFilters.length > 0 && (
 						<div className="flex gap-1.5 border-l pl-3">
 							{activeFilters.map((filter, index) => (
 								<Badge key={index}>{filter}</Badge>
 							))}
 						</div>
 					)}
-					<Button
-						onClick={() => setSticky(!sticky)}
-						variant="ghost"
-						size="icon"
-						className={cn(
-							"absolute top-1 right-1 rounded-lg text-muted-foreground hover:text-foreground",
-							sticky ? "text-primary hover:text-primary" : ""
-						)}
-					>
-						<span className="sr-only">Toggle Sticky Filters</span>
-						{sticky ? <Pin /> : <PinOff />}
-					</Button>
 				</CardHeader>
 				<CardContent className="flex gap-3">
 					<Tabs value={range} onValueChange={setRange} className="flex-1">
@@ -105,9 +99,9 @@ export function StickyFilters({
 							<Button variant="outline">
 								<Filter />
 								<span className="hidden sm:inline">Filters</span>
-								{activeFiltersCount > 0 && (
+								{activeFilters.length > 0 && (
 									<span className="text-xs bg-primary text-primary-foreground rounded-full size-4">
-										{activeFiltersCount}
+										{activeFilters.length}
 									</span>
 								)}
 							</Button>
