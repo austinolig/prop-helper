@@ -1,7 +1,4 @@
-import { GamelogTable } from "@/components/gamelog-table";
-import { columns } from "@/components/gamelog-table/columns";
-import { StatChart } from "@/components/stat-chart";
-import { StickyFilters } from "@/components/sticky-filters";
+import { DashboardContent } from "@/components/dashboard-content";
 import {
 	fetchGamelogsByPlayerId,
 	fetchPlayerById,
@@ -44,9 +41,7 @@ export default async function Dashboard({
 	return (
 		<main>
 			<PlayerCard player={player} />
-			<StickyFilters />
-			<StatChart data={gamelogs} />
-			<GamelogTable columns={columns} data={gamelogs} />
+			<DashboardContent gamelogs={gamelogs} />
 		</main>
 	);
 }
