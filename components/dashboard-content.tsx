@@ -52,7 +52,7 @@ export function DashboardContent({ gamelogs }: DashboardContentProps) {
 		}
 
 		const rangeLimit = parseInt(range);
-		return filteredGamelogs.slice(-rangeLimit);
+		return filteredGamelogs.slice(0, rangeLimit);
 	}, [gamelogs, filters, range]);
 
 	return (

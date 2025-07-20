@@ -100,7 +100,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 				</div>
 				<CardContent className="p-0">
 					<ChartContainer config={chartConfig} className="h-64 w-full">
-						<BarChart accessibilityLayer data={data}>
+						<BarChart accessibilityLayer data={data.toReversed()}>
 							<CartesianGrid vertical={false} />
 							<XAxis
 								dataKey="gameDate"

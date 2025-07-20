@@ -1,25 +1,13 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
-import { Button } from "../ui/button"
 import { GameLog } from "@/types"
 import { format } from "date-fns"
 
 export const columns: ColumnDef<GameLog>[] = [
 	{
 		accessorKey: "gameDate",
-		header: ({ column }) => {
-			return (
-				<Button
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-				>
-					Date
-					<ArrowUpDown className="h-4 w-4" />
-				</Button>
-			)
-		},
+		header: () => <div className="text-center">Date</div>,
 		cell: ({ row }) => {
 			const date = new Date(row.getValue("gameDate"))
 			return <div className="text-center">{format(date, "M/d")}</div>;
