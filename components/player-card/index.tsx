@@ -24,23 +24,23 @@ export default function PlayerCard({ player }: PlayerCardProps) {
 				</CardHeader>
 				<CardContent className="grid grid-flow-col auto-cols-[1fr] gap-3 justify-between overflow-x-auto">
 					<div className="min-w-max">
-						<p className="font-medium">25 <span className="text-sm">POINTS</span></p>
+						<p className="font-medium">25 <span className="text-sm">PTS</span></p>
 						<p className="text-sm text-muted-foreground">H: 37/L: 10</p>
 					</div>
 					<div className="min-w-max">
-						<p className="font-medium">10 <span className="text-sm">REBOUNDS</span></p>
+						<p className="font-medium">10 <span className="text-sm">REB</span></p>
 						<p className="text-sm text-muted-foreground">H: 21/L: 3</p>
 					</div>
 					<div className="min-w-max">
-						<p className="font-medium">10 <span className="text-sm">ASSISTS</span></p>
+						<p className="font-medium">10 <span className="text-sm">AST</span></p>
 						<p className="text-sm text-muted-foreground">H: 18/L: 2</p>
 					</div>
 					<div className="min-w-max">
-						<p className="font-medium">5 <span className="text-sm">BLOCKS</span></p>
+						<p className="font-medium">5 <span className="text-sm">BLK</span></p>
 						<p className="text-sm text-muted-foreground">H: 11/L: 0</p>
 					</div>
 					<div className="min-w-max">
-						<p className="font-medium">3 <span className="text-sm">STEALS</span></p>
+						<p className="font-medium">3 <span className="text-sm">STL</span></p>
 						<p className="text-sm text-muted-foreground">H: 6/L: 0</p>
 					</div>
 				</CardContent>
