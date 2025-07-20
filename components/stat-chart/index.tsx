@@ -79,7 +79,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 			<Card>
 				<CardHeader>
 					<CardTitle>Stat Chart</CardTitle>
-					<CardDescription>Last 6 games</CardDescription>
+					<CardDescription>Last {data.length} games</CardDescription>
 				</CardHeader>
 				<div className="flex items-center justify-between gap-3 pb-3 px-3 overflow-x-auto">
 					{statSelections.map((stat) => (

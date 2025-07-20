@@ -51,7 +51,7 @@ export function GamelogTable<TData, TValue>({
 			<Card>
 				<CardHeader className="pb-6 border-b border-secondary">
 					<CardTitle>Gamelog</CardTitle>
-					<CardDescription>Showing 70 games</CardDescription>
+					<CardDescription>Showing {data.length} games</CardDescription>
 				</CardHeader>
 				<CardContent className="p-0 sm:px-3">
 					<Table>

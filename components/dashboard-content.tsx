@@ -22,27 +22,27 @@ export function DashboardContent({ gamelogs }: DashboardContentProps) {
 			if (filters.matchup && !gamelog.matchup.includes(filters.matchup)) {
 				return false;
 			}
-			
+
 			if (filters.wl && gamelog.wl !== filters.wl) {
 				return false;
 			}
-			
+
 			if (filters.season && gamelog.seasonId !== filters.season) {
 				return false;
 			}
-			
+
 			if (filters.month || filters.year) {
 				const gameDate = new Date(gamelog.gameDate);
-				
+
 				if (filters.month && (gameDate.getMonth() + 1).toString() !== filters.month) {
 					return false;
 				}
-				
+
 				if (filters.year && gameDate.getFullYear().toString() !== filters.year) {
 					return false;
 				}
 			}
-			
+
 			return true;
 		});
 
@@ -50,15 +50,15 @@ export function DashboardContent({ gamelogs }: DashboardContentProps) {
 		if (range === "all") {
 			return filteredGamelogs;
 		}
-		
-		const rangeLimit = parseInt(range.substring(1)); // Extract number from "l5", "l10", "l20"
-		return filteredGamelogs.slice(0, rangeLimit);
+
+		const rangeLimit = parseInt(range);
+		return filteredGamelogs.slice(-rangeLimit);
 	}, [gamelogs, filters, range]);
 
 	return (
 		<>
-			<StickyFilters 
-				filters={filters} 
+			<StickyFilters
+				filters={filters}
 				onFiltersChange={setFilters}
 				range={range}
 				onRangeChange={setRange}

@@ -27,8 +27,8 @@ interface StickyFiltersProps {
 	onRangeChange?: (range: string) => void;
 }
 
-export function StickyFilters({ 
-	filters: externalFilters, 
+export function StickyFilters({
+	filters: externalFilters,
 	onFiltersChange,
 	range: externalRange,
 	onRangeChange
@@ -73,11 +73,11 @@ export function StickyFilters({
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<Tabs value={range} onValueChange={setRange} className="w-full">
-						<TabsList className="grid w-full grid-cols-4">
+						<TabsList className="w-full">
 							<TabsTrigger value="all">All</TabsTrigger>
-							<TabsTrigger value="l5">L5</TabsTrigger>
-							<TabsTrigger value="l10">L10</TabsTrigger>
-							<TabsTrigger value="l20">L20</TabsTrigger>
+							<TabsTrigger value="5">L5</TabsTrigger>
+							<TabsTrigger value="10">L10</TabsTrigger>
+							<TabsTrigger value="20">L20</TabsTrigger>
 						</TabsList>
 					</Tabs>
 					<div className="flex gap-3 justify-between overflow-x-auto">
