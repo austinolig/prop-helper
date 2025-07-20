@@ -28,6 +28,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer"
+import { Badge } from "../ui/badge";
 
 interface StickyFiltersProps {
 	filters?: FilterState;
@@ -60,13 +61,23 @@ export function StickyFilters({
 	};
 
 	const activeFiltersCount = Object.values(filters).filter(value => value !== "").length;
+	const activeFilters = Object.values(filters).filter(value => value !== "");
 
 	return (
 		<section className={sticky ? "sticky top-3 z-10" : ""}>
 			<Card className="w-full relative">
-				<CardHeader className="">
+				<CardHeader>
 					<CardTitle>Filters</CardTitle>
-					<CardDescription>{activeFiltersCount} filter{activeFiltersCount !== 1 ? 's' : ''} selected</CardDescription>
+					<CardDescription>
+						{activeFiltersCount} filter{activeFiltersCount !== 1 ? 's' : ''} selected
+					</CardDescription>
+					{activeFiltersCount > 0 && (
+						<div className="flex gap-1.5 border-l pl-3">
+							{activeFilters.map((filter, index) => (
+								<Badge key={index}>{filter}</Badge>
+							))}
+						</div>
+					)}
 					<Button
 						onClick={() => setSticky(!sticky)}
 						variant="ghost"
@@ -93,7 +104,12 @@ export function StickyFilters({
 						<DrawerTrigger asChild>
 							<Button variant="outline">
 								<Filter />
-								<span>Filters</span>
+								<span className="hidden sm:inline">Filters</span>
+								{activeFiltersCount > 0 && (
+									<span className="text-xs bg-primary text-primary-foreground rounded-full size-4">
+										{activeFiltersCount}
+									</span>
+								)}
 							</Button>
 						</DrawerTrigger>
 						<DrawerContent>
@@ -115,9 +131,8 @@ export function StickyFilters({
 								/>
 							</div>
 							<DrawerFooter>
-								<Button>Save</Button>
 								<DrawerClose asChild>
-									<Button variant="outline">Cancel</Button>
+									<Button>Close</Button>
 								</DrawerClose>
 							</DrawerFooter>
 						</DrawerContent>

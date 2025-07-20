@@ -2,8 +2,8 @@ import { FilterOption } from "@/types";
 
 export const FILTER_OPTIONS = {
 	matchup: [
-		{ value: "vs", label: "vs (Home)" },
-		{ value: "@", label: "@ (Away)" }
+		{ value: "vs", label: "Home" },
+		{ value: "@", label: "Away" }
 	] as FilterOption[],
 	wl: [
 		{ value: "W", label: "Win" },
