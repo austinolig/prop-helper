@@ -44,7 +44,7 @@ export function FilterDropdown({
 					<ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-full">
+			<DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
 				<DropdownMenuItem
 					onClick={() => setValue?.("")}
 				>
@@ -54,7 +54,9 @@ export function FilterDropdown({
 							value === "" ? "opacity-100" : "opacity-0"
 						)}
 					/>
-					None
+					<span className="text-muted-foreground">
+						(Unset)
+					</span>
 				</DropdownMenuItem>
 				{options.map((option) => (
 					<DropdownMenuItem
@@ -73,6 +75,6 @@ export function FilterDropdown({
 					</DropdownMenuItem>
 				))}
 			</DropdownMenuContent>
-		</DropdownMenu>
+		</DropdownMenu >
 	)
 }

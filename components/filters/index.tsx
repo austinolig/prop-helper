@@ -9,8 +9,7 @@ import {
 } from "@/components/ui/card"
 import { FilterDropdown } from "./filter-dropdown";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Filter, Pin, PinOff } from "lucide-react";
+import { Filter, RotateCcw, X } from "lucide-react";
 import { useState } from "react";
 import { FilterState } from "@/types";
 import { FILTER_OPTIONS, DEFAULT_FILTERS, DEFAULT_RANGE } from "@/lib/filter-constants";
@@ -59,6 +58,18 @@ export function Filters({
 		setFilters(newFilters);
 	};
 
+	const handleResetFilters = () => {
+		setFilters(DEFAULT_FILTERS);
+	};
+
+	const handleRemoveFilter = (filterType: string) => {
+		const newFilters = {
+			...filters,
+			[filterType]: ""
+		};
+		setFilters(newFilters);
+	};
+
 	const getFilterLabel = (filterType: string, value: string): string => {
 		const options = FILTER_OPTIONS[filterType as keyof typeof FILTER_OPTIONS];
 		const option = options?.find(opt => opt.value === value);
@@ -66,8 +77,8 @@ export function Filters({
 	};
 
 	const activeFilters = Object.entries(filters)
-		.filter(([_, value]) => value !== "")
-		.map(([key, value]) => getFilterLabel(key, value));
+		.filter(([, value]) => value !== "")
+		.map(([key, value]) => ({ key, label: getFilterLabel(key, value) }));
 
 	return (
 		<section>
@@ -80,7 +91,14 @@ export function Filters({
 					{activeFilters.length > 0 && (
 						<div className="flex gap-1.5 border-l pl-3">
 							{activeFilters.map((filter, index) => (
-								<Badge key={index}>{filter}</Badge>
+								<Badge
+									key={index}
+									className="flex items-center gap-1 cursor-pointer hover:brightness-120"
+									onClick={() => handleRemoveFilter(filter.key)}
+								>
+									{filter.label}
+									<X />
+								</Badge>
 							))}
 						</div>
 					)}
@@ -125,6 +143,10 @@ export function Filters({
 								/>
 							</div>
 							<DrawerFooter>
+								<Button onClick={handleResetFilters} variant="outline" className="flex items-center gap-2">
+									<RotateCcw className="w-4 h-4" />
+									Reset Filters
+								</Button>
 								<DrawerClose asChild>
 									<Button>Close</Button>
 								</DrawerClose>
