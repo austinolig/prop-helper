@@ -102,7 +102,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 
 	useEffect(() => {
 		setSliderValue(roundToNearestHalf(averageStat));
-	}, [selectedStat]);
+	}, [averageStat]);
 
 	return (
 		<section>
