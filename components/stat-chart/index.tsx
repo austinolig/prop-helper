@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+import { TrendingDown, TrendingUp } from "lucide-react"
 import {
 	Bar,
 	BarChart,
@@ -26,7 +26,7 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { GameLog } from "@/types"
 import { format } from "date-fns"
@@ -35,10 +35,18 @@ import { Slider } from "../ui/slider"
 export const description = "A bar chart"
 
 const chartConfig = {
-	desktop: {
+	green: {
 		label: "Value",
-		color: "var(--chart-1)",
+		color: "var(--color-green-500)",
 	},
+	red: {
+		label: "Value",
+		color: "var(--color-red-500)",
+	},
+	// gamelog: {
+	// 	label: "Value",
+	// 	color: "var(--chart-1)",
+	// },
 } satisfies ChartConfig
 
 const statSelections = [
@@ -70,17 +78,31 @@ const roundToNearestHalf = (value: number): number => {
 
 export function StatChart({ data }: { data: GameLog[] }) {
 	const [selectedStat, setSelectedStat] = useState("pts");
+	const [sliderValue, setSliderValue] = useState(0);
 
-	const averageStat = roundToNearestHalf(data.reduce((acc, game) => {
+	const averageStat = data.reduce((acc, game) => {
 		const statValue = game[selectedStat as keyof GameLog] as number;
 		return acc + statValue;
-	}, 0) / data.length);
-	const maxStat = Math.max(...data.map(game => game[selectedStat as keyof GameLog] as number));
+	}, 0) / data.length;
 
-	const [sliderValue, setSliderValue] = useState(averageStat);
+	const highStat = Math.max(...data.map(game => game[selectedStat as keyof GameLog] as number));
+	const lowStat = Math.min(...data.map(game => game[selectedStat as keyof GameLog] as number));
+
 	const handleSlider = (value: number[]) => {
 		setSliderValue(value[0]);
 	};
+
+	const gamesBeyondSliderValue = data.filter(game => {
+		const statValue = game[selectedStat as keyof GameLog] as number;
+		return statValue > sliderValue;
+	});
+
+
+	const hitRate = Math.round((gamesBeyondSliderValue.length / data.length) * 100);
+
+	useEffect(() => {
+		setSliderValue(roundToNearestHalf(averageStat));
+	}, [selectedStat]);
 
 	return (
 		<section>
@@ -107,7 +129,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 				<CardContent className="p-0 pr-3">
 					<ChartContainer config={chartConfig} className="h-64 w-full">
 						<BarChart
-							accessibilityLayer
+							// accessibilityLayer
 							data={data}
 							margin={{ top: 8, right: 0 }}
 						>
@@ -128,13 +150,22 @@ export function StatChart({ data }: { data: GameLog[] }) {
 								width={32}
 							/>
 							<ChartTooltip
-								cursor={false}
-								content={<ChartTooltipContent hideLabel />}
+								content={
+									<ChartTooltipContent
+										labelFormatter={(value, item) => {
+											const matchup = item[0].payload.matchup;
+											const opponent = matchup.substring(matchup.indexOf(" "));
+											return <span className="text-muted-foreground">{format(value, "M/d")} {opponent}</span>;
+										}}
+										formatter={(value, name) => <span className="font-medium text-sm">{value} {name}</span>}
+										hideIndicator
+									/>
+								}
 							/>
 							<Bar
 								dataKey={selectedStat}
-								fill="var(--color-desktop)"
 								radius={8}
+								minPointSize={1}
 							>
 								{data.map((entry, index) => {
 									const statValue = entry[selectedStat as keyof GameLog] as number;
@@ -155,14 +186,16 @@ export function StatChart({ data }: { data: GameLog[] }) {
 										/>
 									)
 								})}
-								<LabelList
-									position="insideTop"
-									offset={8}
-									fill="var(--background)"
-									fontWeight="bold"
-									fontSize={14}
-									opacity={0.7}
-								/>
+								{data.length <= 20 && (
+									<LabelList
+										dataKey={selectedStat}
+										position="insideTop"
+										fill="var(--background)"
+										fontWeight="bold"
+										fontSize={12}
+										opacity={0.7}
+									/>
+								)}
 							</Bar>
 							<ReferenceLine
 								y={sliderValue}
@@ -175,6 +208,11 @@ export function StatChart({ data }: { data: GameLog[] }) {
 									fill: "var(--color-foreground)",
 									fontSize: 14,
 									fontWeight: "bold",
+									stroke: "var(--color-secondary)",
+									strokeWidth: 6,
+									strokeLinejoin: "round",
+									// strokeOpacity: 0.3,
+									paintOrder: "stroke",
 								}}
 							/>
 						</BarChart>
@@ -184,18 +222,25 @@ export function StatChart({ data }: { data: GameLog[] }) {
 					<Slider
 						value={[sliderValue]}
 						onValueChange={handleSlider}
-						max={maxStat}
+						max={highStat}
 						min={0}
 						step={0.5}
 
 					/>
 				</div>
 				<CardFooter className="text-sm border-t border-secondary">
-					<div className="flex gap-1.5 leading-none font-medium">
-						Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+					<div className={cn(
+						"flex gap-1.5 leading-none font-medium",
+						hitRate >= 50 ? "text-green-500" : "text-red-500"
+					)}>
+						<span> {hitRate}% ({gamesBeyondSliderValue.length}/{data.length})</span>
+						{hitRate >= 50
+							? <TrendingUp className="h-4 w-4" />
+							: <TrendingDown className="h-4 w-4" />
+						}
 					</div>
 					<div className="text-muted-foreground leading-none">
-						Showing total visitors for the last 6 months
+						Average: {averageStat.toFixed(1)} | High: {highStat} | Low: {lowStat}
 					</div>
 				</CardFooter>
 			</Card>
