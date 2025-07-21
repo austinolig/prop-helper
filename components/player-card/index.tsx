@@ -8,7 +8,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
 	return (
 		<section className="mb-6">
 			<div className="flex px-3 sm:px-0 items-center gap-3 flex-col sm:flex-row">
-				<div className="size-24 rounded-full bg-secondary shrink-0 flex items-center justify-center font-bold text-2xl">LJ</div>
+				<div className="w-1/3 sm:w-28 aspect-square rounded-full bg-secondary shrink-0 flex items-center justify-center font-bold text-2xl">LJ</div>
 				<div className="flex flex-col w-full gap-3">
 					<div className="flex text-center sm:text-left items-center sm:items-end gap-x-3 gap-y-1 flex-col sm:flex-row">
 						<p className="text-2xl font-bold leading-none">{player?.full_name}</p>
