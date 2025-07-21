@@ -27,20 +27,8 @@ export function DashboardContent({ gamelogs }: DashboardContentProps) {
 				return false;
 			}
 
-			if (filters.season && gamelog.seasonId !== filters.season) {
+			if (filters.opponent && !gamelog.matchup.includes(filters.opponent)) {
 				return false;
-			}
-
-			if (filters.month || filters.year) {
-				const gameDate = new Date(gamelog.gameDate);
-
-				if (filters.month && (gameDate.getMonth() + 1).toString() !== filters.month) {
-					return false;
-				}
-
-				if (filters.year && gameDate.getFullYear().toString() !== filters.year) {
-					return false;
-				}
 			}
 
 			return true;
@@ -59,9 +47,9 @@ export function DashboardContent({ gamelogs }: DashboardContentProps) {
 		<>
 			<Filters
 				filters={filters}
-				onFiltersChange={setFilters}
+				setFilters={setFilters}
 				range={range}
-				onRangeChange={setRange}
+				setRange={setRange}
 			/>
 			<StatChart data={filteredAndRangedGamelogs.toReversed()} />
 			<GamelogTable columns={columns} data={filteredAndRangedGamelogs} />

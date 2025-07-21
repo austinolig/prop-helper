@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	Card,
 	CardContent,
@@ -10,9 +8,8 @@ import {
 import { FilterDropdown } from "./filter-dropdown";
 import { Button } from "@/components/ui/button";
 import { Filter, RotateCcw, X } from "lucide-react";
-import { useState } from "react";
 import { FilterState } from "@/types";
-import { FILTER_OPTIONS, DEFAULT_FILTERS, DEFAULT_RANGE } from "@/lib/filter-constants";
+import { FILTER_OPTIONS, DEFAULT_FILTERS } from "@/lib/filter-constants";
 import {
 	Tabs,
 	TabsList,
@@ -30,26 +27,18 @@ import {
 import { Badge } from "../ui/badge";
 
 interface FiltersProps {
-	filters?: FilterState;
-	onFiltersChange?: (filters: FilterState) => void;
-	range?: string;
-	onRangeChange?: (range: string) => void;
+	filters: FilterState;
+	setFilters: (filters: FilterState) => void;
+	range: string;
+	setRange: (range: string) => void;
 }
 
 export function Filters({
-	filters: externalFilters,
-	onFiltersChange,
-	range: externalRange,
-	onRangeChange
+	filters,
+	setFilters,
+	range,
+	setRange,
 }: FiltersProps) {
-	const [internalFilters, setInternalFilters] = useState<FilterState>(DEFAULT_FILTERS);
-	const [internalRange, setInternalRange] = useState(DEFAULT_RANGE);
-
-	const filters = externalFilters || internalFilters;
-	const setFilters = onFiltersChange || setInternalFilters;
-	const range = externalRange || internalRange;
-	const setRange = onRangeChange || setInternalRange;
-
 	const handleFilterChange = (filterType: string, value: string) => {
 		const newFilters = {
 			...filters,
@@ -140,6 +129,12 @@ export function Filters({
 									placeholder="Win/Loss"
 									value={filters.wl}
 									onValueChange={(value) => handleFilterChange("wl", value)}
+								/>
+								<FilterDropdown
+									options={FILTER_OPTIONS.opponent}
+									placeholder="Opponent"
+									value={filters.opponent}
+									onValueChange={(value) => handleFilterChange("opponent", value)}
 								/>
 							</div>
 							<DrawerFooter>
