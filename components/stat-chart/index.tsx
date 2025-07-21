@@ -228,7 +228,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 
 					/>
 				</div>
-				<CardFooter className="text-sm border-t border-secondary">
+				<CardFooter className="text-sm border-t border-secondary justify-between">
 					<div className={cn(
 						"flex gap-1.5 leading-none font-medium",
 						hitRate >= 50 ? "text-green-500" : "text-red-500"
