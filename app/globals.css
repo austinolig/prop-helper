@@ -90,6 +90,6 @@
 	}
 
 	main {
-		@apply px-0 sm:px-3;
+		@apply px-0 sm:px-3 pb-6;
 	}
 }
