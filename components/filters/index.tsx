@@ -138,13 +138,13 @@ export function Filters({
 								/>
 							</div>
 							<DrawerFooter>
+								<DrawerClose asChild>
+									<Button>Close</Button>
+								</DrawerClose>
 								<Button onClick={handleResetFilters} variant="outline" className="flex items-center gap-2">
 									<RotateCcw className="w-4 h-4" />
 									Reset Filters
 								</Button>
-								<DrawerClose asChild>
-									<Button>Close</Button>
-								</DrawerClose>
 							</DrawerFooter>
 						</DrawerContent>
 					</Drawer>
