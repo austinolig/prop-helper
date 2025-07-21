@@ -4,7 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import { SearchCombobox } from "@/components/search-combobox";
 import { Suspense } from "react";
-import { LoaderCircle } from "lucide-react";
+import { DashboardSkeleton } from "@/components/skeletons";
 
 const kanit = Kanit({
 	subsets: ["latin"],
@@ -35,7 +35,7 @@ export default function RootLayout({
 					</Link>
 					<SearchCombobox />
 				</header>
-				<Suspense fallback={<main className="flex justify-center mt-16 md:mt-28"><LoaderCircle className="animate-spin" /></main>}>
+				<Suspense fallback={<DashboardSkeleton />}>
 					{children}
 				</Suspense>
 			</body>
