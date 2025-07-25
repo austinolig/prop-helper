@@ -132,3 +132,18 @@ export async function fetchAllGamelogs(): Promise<GameLog[]> {
 		throw new Error('Failed to fetch all gamelogs.');
 	}
 }
+
+
+export async function fetchWnbaPlayers(term: string): Promise<PlayersTable[]> {
+	try {
+		console.log(`Fetching WNBA players with term: ${term}`);
+		const response = await fetch(`http://localhost:8000/api/wnba/players${term ? `?fullName=${term}` : ''}`);
+		const data = await response.json();
+		console.log('WNBA Players fetch completed.', data);
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch players.');
+	}
+}
+

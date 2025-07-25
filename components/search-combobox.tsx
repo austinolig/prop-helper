@@ -16,34 +16,40 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react"
-
-const frameworks = [
-	{
-		value: "next.js",
-		label: "Next.js",
-	},
-	{
-		value: "sveltekit",
-		label: "SvelteKit",
-	},
-	{
-		value: "nuxt.js",
-		label: "Nuxt.js",
-	},
-	{
-		value: "remix",
-		label: "Remix",
-	},
-	{
-		value: "astro",
-		label: "Astro",
-	},
-]
+import { useEffect, useState } from "react"
+import { usePathname, useRouter } from "next/navigation";
+import { handleSearchAction } from "@/lib/actions";
+import { PlayersTable } from "@/types";
 
 export function SearchCombobox() {
+	const { replace } = useRouter();
+	const pathname = usePathname();
+
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState("")
+	const [players, setPlayers] = useState<PlayersTable[]>([]);
+
+	const handleSearch = async (term: string) => {
+		// const params = new URLSearchParams(searchParams);
+		// if (term) {
+		// 	params.set("fullName", term);
+		// } else {
+		// 	params.delete("fullName");
+		// }
+		// replace(`${pathname}?${params.toString()}`);
+
+		const results = await handleSearchAction(term);
+		if (results) {
+			setPlayers(results);
+		} else {
+			setPlayers([]);
+		}
+	}
+
+	useEffect(() => {
+		replace(`${pathname}?playerId=${value}`);
+	}, [value, pathname, replace]);
+
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -56,7 +62,7 @@ export function SearchCombobox() {
 				>
 					<span className="hidden sm:inline">
 						{value
-							? frameworks.find((framework) => framework.value === value)?.label
+							? players.find((player) => player.id.toString() === value)?.full_name
 							: "Select player..."}
 					</span>
 					<ChevronsUpDown className="sm:ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -64,26 +70,28 @@ export function SearchCombobox() {
 			</PopoverTrigger>
 			<PopoverContent align="end" className="w-[200px] p-0">
 				<Command>
-					<CommandInput placeholder="Search player..." />
+					<CommandInput
+						onValueChange={handleSearch}
+						placeholder="Search player..." />
 					<CommandList>
 						<CommandEmpty>No player found.</CommandEmpty>
 						<CommandGroup>
-							{frameworks.map((framework) => (
+							{players.map((player) => (
 								<CommandItem
-									key={framework.value}
-									value={framework.value}
+									key={player.id}
+									value={player.full_name}
 									onSelect={(currentValue) => {
-										setValue(currentValue === value ? "" : currentValue)
+										setValue(currentValue === player.id.toString() ? "" : player.id.toString())
 										setOpen(false)
 									}}
 								>
 									<CheckIcon
 										className={cn(
 											"mr-2 h-4 w-4",
-											value === framework.value ? "opacity-100" : "opacity-0"
+											value === player.full_name ? "opacity-100" : "opacity-0"
 										)}
 									/>
-									{framework.label}
+									{player.full_name}
 								</CommandItem>
 							))}
 						</CommandGroup>
