@@ -16,7 +16,7 @@ export default function Home() {
 					Find value, spot trends, and make smarter betting decisions.
 				</p>
 				<Button asChild size="lg">
-					<Link href="/dashboard">
+					<Link href="/nba/2544">
 						Get Started
 					</Link>
 				</Button>

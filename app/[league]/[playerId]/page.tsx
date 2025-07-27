@@ -9,21 +9,21 @@ import { Button } from "@/components/ui/button";
 import PlayerCard from "@/components/player-card";
 
 interface DashboardProps {
-	params: Promise<{ playerId?: string[] }>;
+	params: Promise<{ league: string, playerId: string }>;
 }
 
 export default async function Dashboard({
 	params
 }: DashboardProps) {
-	const { playerId } = await params;
-	const parsedPlayerId = playerId ? parseInt(playerId[0]) : 2544;
+	const { league, playerId } = await params;
+	const parsedPlayerId = playerId ? parseInt(playerId) : 2544;
 	const [
 		gamelogs,
 		player,
 		// allPlayers
 	] = await Promise.all([
-		fetchGamelogsByPlayerId(parsedPlayerId),
-		fetchPlayerById(parsedPlayerId),
+		fetchGamelogsByPlayerId(parsedPlayerId, league),
+		fetchPlayerById(parsedPlayerId, league),
 		// fetchPlayers()
 	]);
 

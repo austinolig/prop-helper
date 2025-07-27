@@ -16,13 +16,13 @@ export async function fetchPlayers(): Promise<PlayersTable[]> {
 	}
 }
 
-export async function fetchPlayerById(playerId: number): Promise<PlayersTable | null> {
+export async function fetchPlayerById(playerId: number, league: string = 'nba'): Promise<PlayersTable | null> {
 	try {
 		console.log(`Fetching player ${playerId}...`);
 		const data = await sql<PlayersTable[]>`SELECT * FROM players WHERE id = ${playerId}`;
 
 		if (data.length === 0) {
-			const response = await fetch(`http://localhost:8000/api/wnba/players/${playerId}/info`);
+			const response = await fetch(`http://localhost:8000/api/${league}/players/${playerId}/info`);
 			const data = await response.json();
 			console.log('Backup player fetch completed.', data);
 			return data;
@@ -36,7 +36,7 @@ export async function fetchPlayerById(playerId: number): Promise<PlayersTable | 
 	}
 }
 
-export async function fetchGamelogsByPlayerId(playerId: number): Promise<GameLog[]> {
+export async function fetchGamelogsByPlayerId(playerId: number, league: string = 'nba'): Promise<GameLog[]> {
 	try {
 		console.log(`Fetching gamelogs for player ${playerId}...`);
 		const data = await sql<GameLog[]>`
@@ -74,7 +74,7 @@ export async function fetchGamelogsByPlayerId(playerId: number): Promise<GameLog
 		`;
 
 		if (data.length === 0) {
-			const response = await fetch(`http://localhost:8000/api/wnba/players/${playerId}/gamelog`);
+			const response = await fetch(`http://localhost:8000/api/${league}/players/${playerId}/gamelog`);
 			const data = await response.json();
 			const formattedData = buildGameLog(data.data_sets[0].data.data);
 			console.log('Backup gamelogs fetch completed.', formattedData);
@@ -133,13 +133,12 @@ export async function fetchAllGamelogs(): Promise<GameLog[]> {
 	}
 }
 
-
-export async function fetchWnbaPlayers(term: string): Promise<PlayersTable[]> {
+export async function fetchPlayersFromAPI(league: string, term: string): Promise<PlayersTable[]> {
 	try {
-		console.log(`Fetching WNBA players with term: ${term}`);
-		const response = await fetch(`http://localhost:8000/api/wnba/players${term ? `?fullName=${term}` : ''}`);
+		console.log(`Fetching ${league} players with term: ${term}`);
+		const response = await fetch(`http://localhost:8000/api/${league}/players/${term}`);
 		const data = await response.json();
-		console.log('WNBA Players fetch completed.', data);
+		console.log('API players fetch completed.', data);
 		return data;
 	} catch (error) {
 		console.error('Database Error:', error);
