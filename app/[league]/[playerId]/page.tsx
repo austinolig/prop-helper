@@ -32,7 +32,7 @@ export default async function Dashboard({
 		return (
 			<main className="flex flex-col items-center justify-center mt-16 md:mt-28">
 				<h1 className="text-2xl font-bold mb-4">Player Not Found</h1>
-				<Button variant="default"><Link href="/dashboard">Go Back</Link></Button>
+				<Button variant="default"><Link href="/">Go Back</Link></Button>
 			</main>
 		);
 	}

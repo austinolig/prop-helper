@@ -4,6 +4,13 @@ import { buildGameLog } from './seed/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+
+/**
+ * Fetches all players from the database, ordered by full name
+ * @returns Promise resolving to array of player records
+ * @throws Error if database query fails
+ */
 export async function fetchPlayers(): Promise<PlayersTable[]> {
 	try {
 		console.log('Fetching players...');
@@ -16,13 +23,20 @@ export async function fetchPlayers(): Promise<PlayersTable[]> {
 	}
 }
 
+/**
+ * Fetches player information by ID with API fallback
+ * @param playerId - Unique player identifier
+ * @param league - League type (nba, wnba)
+ * @returns Promise resolving to player data or null if not found
+ * @throws Error if both database and API calls fail
+ */
 export async function fetchPlayerById(playerId: number, league: string = 'nba'): Promise<PlayersTable | null> {
 	try {
 		console.log(`Fetching player ${playerId}...`);
 		const data = await sql<PlayersTable[]>`SELECT * FROM players WHERE id = ${playerId}`;
 
 		if (data.length === 0) {
-			const response = await fetch(`http://localhost:8000/api/${league}/players/${playerId}/info`);
+			const response = await fetch(`${API_BASE_URL}/api/${league}/players/${playerId}/info`);
 			const data = await response.json();
 			console.log('Backup player fetch completed.', data);
 			return data;
@@ -36,6 +50,13 @@ export async function fetchPlayerById(playerId: number, league: string = 'nba'):
 	}
 }
 
+/**
+ * Fetches game logs for a specific player with API fallback
+ * @param playerId - Unique player identifier
+ * @param league - League type (nba, wnba)
+ * @returns Promise resolving to array of game logs, newest first
+ * @throws Error if both database and API calls fail
+ */
 export async function fetchGamelogsByPlayerId(playerId: number, league: string = 'nba'): Promise<GameLog[]> {
 	try {
 		console.log(`Fetching gamelogs for player ${playerId}...`);
@@ -74,7 +95,7 @@ export async function fetchGamelogsByPlayerId(playerId: number, league: string =
 		`;
 
 		if (data.length === 0) {
-			const response = await fetch(`http://localhost:8000/api/${league}/players/${playerId}/gamelog`);
+			const response = await fetch(`${API_BASE_URL}/api/${league}/players/${playerId}/gamelog`);
 			const data = await response.json();
 			const formattedData = buildGameLog(data.data_sets[0].data.data);
 			console.log('Backup gamelogs fetch completed.', formattedData);
@@ -133,10 +154,17 @@ export async function fetchAllGamelogs(): Promise<GameLog[]> {
 	}
 }
 
+/**
+ * Searches for players via external API
+ * @param league - League type (nba, wnba)
+ * @param term - Search term for player name
+ * @returns Promise resolving to array of matching players
+ * @throws Error if API call fails
+ */
 export async function fetchPlayersFromAPI(league: string, term: string): Promise<PlayersTable[]> {
 	try {
 		console.log(`Fetching ${league} players with term: ${term}`);
-		const response = await fetch(`http://localhost:8000/api/${league}/players/${term}`);
+		const response = await fetch(`${API_BASE_URL}/api/${league}/players/${term}`);
 		const data = await response.json();
 		console.log('API players fetch completed.', data);
 		return data;

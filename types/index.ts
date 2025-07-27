@@ -1,3 +1,7 @@
+/**
+ * Represents a single game log entry for a player
+ * Contains comprehensive statistics from a basketball game
+ */
 export interface GameLog {
 	seasonId: string;
 	playerId: number;
@@ -28,36 +32,43 @@ export interface GameLog {
 	videoAvailable: number;
 }
 
+/**
+ * Raw game log data array from API response
+ * Maps directly to GameLog interface properties in order
+ */
 export type GameLogData = [
-	string,
-	number,
-	string,
-	string,
-	string,
-	'W' | 'L',
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
+	GameLog['seasonId'],
+	GameLog['playerId'],
+	GameLog['gameId'],
+	GameLog['gameDate'],
+	GameLog['matchup'],
+	GameLog['wl'],
+	GameLog['min'],
+	GameLog['fgm'],
+	GameLog['fga'],
+	GameLog['fgPct'],
+	GameLog['fg3m'],
+	GameLog['fg3a'],
+	GameLog['fg3Pct'],
+	GameLog['ftm'],
+	GameLog['fta'],
+	GameLog['ftPct'],
+	GameLog['oreb'],
+	GameLog['dreb'],
+	GameLog['reb'],
+	GameLog['ast'],
+	GameLog['stl'],
+	GameLog['blk'],
+	GameLog['tov'],
+	GameLog['pf'],
+	GameLog['pts'],
+	GameLog['plusMinus'],
+	GameLog['videoAvailable']
 ];
 
+/**
+ * Player information from the database
+ */
 export interface PlayersTable {
 	id: number;
 	full_name: string;
@@ -66,10 +77,17 @@ export interface PlayersTable {
 	is_active: boolean;
 }
 
+/**
+ * Filter state for game log filtering
+ * Keys represent filter types, values are the selected filter values
+ */
 export interface FilterState {
 	[key: string]: string;
 }
 
+/**
+ * Option for dropdown filters
+ */
 export interface FilterOption {
 	value: string;
 	label: string;
