@@ -70,6 +70,10 @@ const statSelections = [
 		value: "stl",
 		label: "STL",
 	},
+	{
+		value: "fg3m",
+		label: "3PM",
+	},
 ]
 
 const roundToNearestHalf = (value: number): number => {
@@ -155,9 +159,13 @@ export function StatChart({ data }: { data: GameLog[] }) {
 										labelFormatter={(value, item) => {
 											const matchup = item[0].payload.matchup;
 											const opponent = matchup.substring(matchup.indexOf(" "));
-											return <span className="text-muted-foreground">{format(value, "M/d")} {opponent}</span>;
+											return <>
+												<span className="text-muted-foreground">{format(value, "M/d")} {opponent} ({item[0].payload.wl})</span>
+												<br />
+												<span className="text-muted-foreground">{item[0].payload.min} mins played</span>
+											</>;
 										}}
-										formatter={(value, name) => <span className="font-medium text-sm">{value} {name}</span>}
+										formatter={(value) => <span className="font-medium text-sm">{value}</span>}
 										hideIndicator
 									/>
 								}
