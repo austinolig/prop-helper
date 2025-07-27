@@ -26,7 +26,7 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart"
 import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import { GameLog } from "@/types"
 import { format } from "date-fns"
@@ -74,6 +74,22 @@ const statSelections = [
 		value: "fg3m",
 		label: "3PM",
 	},
+	{
+		value: "pra",
+		label: "PTS+REB+AST",
+	},
+	{
+		value: "pr",
+		label: "PTS+REB",
+	},
+	{
+		value: "pa",
+		label: "PTS+AST",
+	},
+	{
+		value: "ra",
+		label: "REB+AST",
+	},
 ]
 
 const roundToNearestHalf = (value: number): number => {
@@ -81,28 +97,34 @@ const roundToNearestHalf = (value: number): number => {
 };
 
 export function StatChart({ data }: { data: GameLog[] }) {
+	const enhancedData = useMemo(() => data.map(game => ({
+		...game,
+		pra: game.pts + game.reb + game.ast,
+		pr: game.pts + game.reb,
+		pa: game.pts + game.ast,
+		ra: game.reb + game.ast,
+	})), [data]);
 	const [selectedStat, setSelectedStat] = useState("pts");
 	const [sliderValue, setSliderValue] = useState(0);
 
-	const averageStat = data.reduce((acc, game) => {
+	const averageStat = enhancedData.reduce((acc, game) => {
 		const statValue = game[selectedStat as keyof GameLog] as number;
 		return acc + statValue;
-	}, 0) / data.length;
+	}, 0) / enhancedData.length;
 
-	const highStat = Math.max(...data.map(game => game[selectedStat as keyof GameLog] as number));
-	const lowStat = Math.min(...data.map(game => game[selectedStat as keyof GameLog] as number));
+	const highStat = Math.max(...enhancedData.map(game => game[selectedStat as keyof GameLog] as number));
+	const lowStat = Math.min(...enhancedData.map(game => game[selectedStat as keyof GameLog] as number));
 
 	const handleSlider = (value: number[]) => {
 		setSliderValue(value[0]);
 	};
 
-	const gamesBeyondSliderValue = data.filter(game => {
+	const gamesBeyondSliderValue = enhancedData.filter(game => {
 		const statValue = game[selectedStat as keyof GameLog] as number;
 		return statValue > sliderValue;
 	});
 
-
-	const hitRate = Math.round((gamesBeyondSliderValue.length / data.length) * 100);
+	const hitRate = Math.round((gamesBeyondSliderValue.length / enhancedData.length) * 100);
 
 	useEffect(() => {
 		setSliderValue(roundToNearestHalf(averageStat));
@@ -113,7 +135,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 			<Card>
 				<CardHeader>
 					<CardTitle>Stat Chart</CardTitle>
-					<CardDescription>Last {data.length} games</CardDescription>
+					<CardDescription>Last {enhancedData.length} games</CardDescription>
 				</CardHeader>
 				<div className="flex items-center justify-between gap-3 px-3 overflow-x-auto">
 					{statSelections.map((stat) => (
@@ -134,7 +156,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 					<ChartContainer config={chartConfig} className="h-64 w-full">
 						<BarChart
 							// accessibilityLayer
-							data={data}
+							data={enhancedData}
 							margin={{ top: 8, right: 0 }}
 						>
 							<CartesianGrid vertical={false} />
@@ -175,7 +197,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 								radius={8}
 								minPointSize={1}
 							>
-								{data.map((entry, index) => {
+								{enhancedData.map((entry, index) => {
 									const statValue = entry[selectedStat as keyof GameLog] as number;
 
 									let fillColor = "";
@@ -194,7 +216,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 										/>
 									)
 								})}
-								{data.length <= 20 && (
+								{enhancedData.length <= 20 && (
 									<LabelList
 										dataKey={selectedStat}
 										position="insideTop"
@@ -241,7 +263,7 @@ export function StatChart({ data }: { data: GameLog[] }) {
 						"flex gap-1.5 leading-none font-medium",
 						hitRate >= 50 ? "text-green-500" : "text-red-500"
 					)}>
-						<span> {hitRate}% ({gamesBeyondSliderValue.length}/{data.length})</span>
+						<span> {hitRate}% ({gamesBeyondSliderValue.length}/{enhancedData.length})</span>
 						{hitRate >= 50
 							? <TrendingUp className="h-4 w-4" />
 							: <TrendingDown className="h-4 w-4" />
