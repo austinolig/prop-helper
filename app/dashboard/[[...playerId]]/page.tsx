@@ -9,15 +9,14 @@ import { Button } from "@/components/ui/button";
 import PlayerCard from "@/components/player-card";
 
 interface DashboardProps {
-	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+	params: Promise<{ playerId?: string[] }>;
 }
 
 export default async function Dashboard({
-	searchParams
+	params
 }: DashboardProps) {
-	const playerIdParam = (await searchParams).playerId;
-	const playerId = Array.isArray(playerIdParam) ? playerIdParam[0] : playerIdParam;
-	const parsedPlayerId = playerId ? parseInt(playerId) : 2544;
+	const { playerId } = await params;
+	const parsedPlayerId = playerId ? parseInt(playerId[0]) : 2544;
 	const [
 		gamelogs,
 		player,

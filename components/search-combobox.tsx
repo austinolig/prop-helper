@@ -16,28 +16,18 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover"
-import { useEffect, useState } from "react"
-import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react"
 import { handleSearchAction } from "@/lib/actions";
 import { PlayersTable } from "@/types";
+import { useRouter, useParams } from "next/navigation";
 
 export function SearchCombobox() {
-	const { replace } = useRouter();
-	const pathname = usePathname();
-
-	const [open, setOpen] = useState(false)
-	const [value, setValue] = useState("")
+	const router = useRouter();
+	const params = useParams<{ playerId?: string[] }>();
+	const [league, setLeague] = useState("NBA");
 	const [players, setPlayers] = useState<PlayersTable[]>([]);
 
 	const handleSearch = async (term: string) => {
-		// const params = new URLSearchParams(searchParams);
-		// if (term) {
-		// 	params.set("fullName", term);
-		// } else {
-		// 	params.delete("fullName");
-		// }
-		// replace(`${pathname}?${params.toString()}`);
-
 		const results = await handleSearchAction(term);
 		if (results) {
 			setPlayers(results);
@@ -46,33 +36,53 @@ export function SearchCombobox() {
 		}
 	}
 
-	useEffect(() => {
-		replace(`${pathname}?playerId=${value}`);
-	}, [value, pathname, replace]);
-
+	const handleSelect = (playerId: string) => {
+		router.push(`/dashboard/${playerId}`);
+	}
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
+		<Popover>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
 					role="combobox"
-					aria-expanded={open}
-					className="w-auto sm:w-[200px] justify-between"
+					// aria-expanded={open}
+					className="w-auto sm:w-[300px] justify-between"
 				>
 					<span className="hidden sm:inline">
-						{value
-							? players.find((player) => player.id.toString() === value)?.full_name
+						{params.playerId
+							? players.find((player) => player.id.toString() === params.playerId[0])?.full_name
 							: "Select player..."}
 					</span>
 					<ChevronsUpDown className="sm:ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent align="end" className="w-[200px] p-0">
+			<PopoverContent align="end" className="w-[300px] p-0">
 				<Command>
+					<div className="flex border-b-1">
+						<Button variant="ghost"
+							className={cn(
+								"flex-1 rounded-none text-muted-foreground hover:text-foreground hover:border-foreground",
+								league === "NBA" ? "border-primary text-primary hover:text-primary hover:border-primary" : "",
+							)}
+							onClick={() => setLeague("NBA")}
+						>
+							NBA
+						</Button>
+						<Button variant="ghost"
+							className={cn(
+								"flex-1 rounded-none text-muted-foreground hover:text-foreground hover:border-foreground",
+								league === "WNBA" ? "border-primary text-primary hover:text-primary hover:border-primary" : "",
+							)}
+							onClick={() => setLeague("WNBA")}
+						>
+							WNBA
+						</Button>
+					</div>
 					<CommandInput
 						onValueChange={handleSearch}
-						placeholder="Search player..." />
+						placeholder="Search player..."
+					/>
 					<CommandList>
 						<CommandEmpty>No player found.</CommandEmpty>
 						<CommandGroup>
@@ -80,15 +90,12 @@ export function SearchCombobox() {
 								<CommandItem
 									key={player.id}
 									value={player.full_name}
-									onSelect={(currentValue) => {
-										setValue(currentValue === player.id.toString() ? "" : player.id.toString())
-										setOpen(false)
-									}}
+									onSelect={() => handleSelect(player.id.toString())}
 								>
 									<CheckIcon
 										className={cn(
 											"mr-2 h-4 w-4",
-											value === player.full_name ? "opacity-100" : "opacity-0"
+											params.playerId[0] === player.id.toString() ? "opacity-100" : "opacity-0"
 										)}
 									/>
 									{player.full_name}
