@@ -95,10 +95,10 @@ export function Filters({
 				<CardContent className="flex gap-3">
 					<Tabs value={range} onValueChange={setRange} className="flex-1">
 						<TabsList className="w-full">
-							<TabsTrigger value="all">All</TabsTrigger>
 							<TabsTrigger value="5">L5</TabsTrigger>
 							<TabsTrigger value="10">L10</TabsTrigger>
 							<TabsTrigger value="20">L20</TabsTrigger>
+							<TabsTrigger value="all">All</TabsTrigger>
 						</TabsList>
 					</Tabs>
 					<Drawer>

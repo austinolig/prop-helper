@@ -49,4 +49,4 @@ export const DEFAULT_FILTERS = {
 	opponent: "",
 };
 
-export const DEFAULT_RANGE = "all";
+export const DEFAULT_RANGE = "5";
