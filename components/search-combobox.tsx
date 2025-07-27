@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon, ChevronsUpDown } from "lucide-react"
+import { CheckIcon, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,28 +16,40 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { handleSearchAction } from "@/lib/actions";
 import { PlayersTable } from "@/types";
 import { useRouter, useParams } from "next/navigation";
 
 export function SearchCombobox() {
 	const router = useRouter();
-	const params = useParams<{ playerId?: string[] }>();
-	const [league, setLeague] = useState("NBA");
+	const params = useParams<{ league: string, playerId: string }>();
+	const leagueParam = params.league ? params.league : "nba";
+	const playerIdParam = params.playerId ? params.playerId : null;
 	const [players, setPlayers] = useState<PlayersTable[]>([]);
+	const [league, setLeague] = useState(leagueParam);
+	const [term, setTerm] = useState("");
 
-	const handleSearch = async (term: string) => {
-		const results = await handleSearchAction(term);
+	const handleSearch = useCallback(async () => {
+		if (term.length < 2) {
+			setPlayers([]);
+			return;
+		}
+		const results = await handleSearchAction(league, term);
 		if (results) {
 			setPlayers(results);
-		} else {
-			setPlayers([]);
 		}
-	}
+	}, [league, term]);
+
+	useEffect(() => {
+		handleSearch();
+	}, [league, term, handleSearch]);
 
 	const handleSelect = (playerId: string) => {
-		router.push(`/dashboard/${playerId}`);
+		if (playerId === playerIdParam) {
+			return;
+		}
+		router.push(`/${league}/${playerId}`);
 	}
 
 	return (
@@ -46,41 +58,38 @@ export function SearchCombobox() {
 				<Button
 					variant="outline"
 					role="combobox"
-					// aria-expanded={open}
-					className="w-auto sm:w-[300px] justify-between"
+					className="w-auto justify-between"
 				>
-					<span className="hidden sm:inline">
-						{params.playerId
-							? players.find((player) => player.id.toString() === params.playerId[0])?.full_name
-							: "Select player..."}
-					</span>
-					<ChevronsUpDown className="sm:ml-2 h-4 w-4 shrink-0 opacity-50" />
+					<Search className="h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent align="end" className="w-[300px] p-0">
 				<Command>
 					<div className="flex border-b-1">
-						<Button variant="ghost"
+						<Button
+							variant="ghost"
 							className={cn(
 								"flex-1 rounded-none text-muted-foreground hover:text-foreground hover:border-foreground",
-								league === "NBA" ? "border-primary text-primary hover:text-primary hover:border-primary" : "",
+								league === "nba" ? "border-primary text-primary hover:text-primary hover:border-primary" : "",
 							)}
-							onClick={() => setLeague("NBA")}
+							onClick={() => setLeague("nba")}
 						>
 							NBA
 						</Button>
-						<Button variant="ghost"
+						<Button
+							variant="ghost"
 							className={cn(
 								"flex-1 rounded-none text-muted-foreground hover:text-foreground hover:border-foreground",
-								league === "WNBA" ? "border-primary text-primary hover:text-primary hover:border-primary" : "",
+								league === "wnba" ? "border-primary text-primary hover:text-primary hover:border-primary" : "",
 							)}
-							onClick={() => setLeague("WNBA")}
+							onClick={() => setLeague("wnba")}
 						>
 							WNBA
 						</Button>
 					</div>
 					<CommandInput
-						onValueChange={handleSearch}
+						value={term}
+						onValueChange={setTerm}
 						placeholder="Search player..."
 					/>
 					<CommandList>
@@ -95,7 +104,7 @@ export function SearchCombobox() {
 									<CheckIcon
 										className={cn(
 											"mr-2 h-4 w-4",
-											params.playerId[0] === player.id.toString() ? "opacity-100" : "opacity-0"
+											playerIdParam === player.id.toString() ? "opacity-100" : "opacity-0"
 										)}
 									/>
 									{player.full_name}
