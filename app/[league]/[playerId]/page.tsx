@@ -39,7 +39,7 @@ export default async function Dashboard({
 
 	return (
 		<main className="space-y-3">
-			<PlayerCard player={player} />
+			<PlayerCard player={player} gamelogs={gamelogs} />
 			<DashboardContent gamelogs={gamelogs} />
 		</main>
 	);
