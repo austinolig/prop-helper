@@ -1,35 +1,40 @@
 # Prop Helper
 
-Designed to assist sports bettors analyze player props.
-
+> Designed to assist sports bettors analyze player props.
 
 ## Features
 
-*See planned features below.*
+- **Player Lookup** — Search for players with fuzzy search
+- **Player Dashboard** — View player statistics, game logs, and season averages
+- **Prop Analysis** — Analyze prop lines against player statistics
+- **Filtering** — Filter results by home/away, opponent, recent form, etc.
+- **Data Visualization** — Charts and tables for statistical insights
+- **Mobile-Friendly Design** — Responsive UI for all devices
 
+## Technology Stack
 
-## Planned Features
+- **React + Next.js**
+- **TypeScript**
+- **Tailwind CSS + shadcn/ui**
+- **Postgres**
+- **Recharts**
 
-- [X] **Player Lookup**: Search for players.
-  - [X] Fuzzy search.
-- [x] **Player Dashboard**: View player statistics.
-  - [x] Display game logs.
-  - [x] Display season high, low, averages.
-  - [x] Filter results (home/away, opponent, recent form, etc.).
-- [x] **Prop Analysis**: View prop lines and odds.
-  - [x] Get prop information from popular sportsbooks or enter manually.
-  - [x] Analyze props against player statistics.
-- [ ] **Prop Recommendations**: Recommend props based on analysis.
-  - [ ] Provide insights on value bets.
-- [ ] **Slip Builder**: Add you favourite props to a slip.
-- [ ] **Extend to Other Sports**: Support more sports beyond basketball.
+## Getting Started
 
+```bash
+git clone https://github.com/austinolig/prop-helper.git
+cd prop-helper
+pnpm install
+pnpm run dev
+```
 
-## Todos
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- [ ] **Backend**: Centralize data logic.
-  - [ ] Extract data, transform, and load (ETL) into db.
-  - [ ] Daily cron job to refresh data.
-  - [ ] Create API to query db for fetching on frontend.
-- [ ] **Frontend**: Improve user interface. 
-  - [ ] Use shadcn/ui for components.
+## Available Scripts
+
+```bash
+pnpm run dev          # start dev server
+pnpm run build        # build for production
+pnpm run start        # start production server
+pnpm run lint         # run ESLint
+```
